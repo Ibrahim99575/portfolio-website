@@ -1,5 +1,7 @@
-import React from 'react';
+// src/App.js
+import React, { useEffect } from 'react';
 import './App.css';
+import { ThemeProvider } from './context/ThemeContext';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -9,18 +11,35 @@ import Projects from './components/Projects';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 
+function ScrollProgress() {
+  useEffect(() => {
+    const bar = document.getElementById('scroll-progress');
+    const update = () => {
+      const scrolled = window.scrollY;
+      const total = document.documentElement.scrollHeight - window.innerHeight;
+      if (bar) bar.style.width = `${(scrolled / total) * 100}%`;
+    };
+    window.addEventListener('scroll', update, { passive: true });
+    return () => window.removeEventListener('scroll', update);
+  }, []);
+  return <div id="scroll-progress" />;
+}
+
 function App() {
   return (
-    <div className="App">
-      <Header />
-      <Hero />
-      <About />
-      <Experience />
-      <Skills />
-      <Projects />
-      <Contact />
-      <Footer />
-    </div>
+    <ThemeProvider>
+      <div className="App">
+        <ScrollProgress />
+        <Header />
+        <Hero />
+        <About />
+        <Experience />
+        <Skills />
+        <Projects />
+        <Contact />
+        <Footer />
+      </div>
+    </ThemeProvider>
   );
 }
 
