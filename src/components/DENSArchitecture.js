@@ -1,36 +1,33 @@
 import React from 'react';
 
-// Node coordinate map — all positions for the 1040x470 viewBox
+// ViewBox: 0 0 1080 470
 const N = {
-  // External input
-  flightEvents:  { x: 8,   y: 210, w: 100, h: 36 },
-  // DENS core (main processor)
-  dens:          { x: 148, y: 183, w: 124, h: 66 },
-  // Data sources DENS fetches from
-  postgres:      { x: 18,  y: 88,  w: 110, h: 32 },
-  amadeusPax:    { x: 164, y: 62,  w: 112, h: 30 },
-  amadeusLive:   { x: 164, y: 102, w: 112, h: 30 },
+  // Single external vendor (Amadeus — sends flight events + provides data on request)
+  externalVendor: { x: 8,   y: 148, w: 118, h: 92 },
+  // Data platform (internal PostgreSQL)
+  postgres:       { x: 18,  y: 78,  w: 110, h: 32 },
+  // DENS core processor
+  dens:           { x: 165, y: 183, w: 124, h: 66 },
   // Message pipeline
-  httpSvc:       { x: 320, y: 202, w: 106, h: 36 },
-  serviceBus:    { x: 472, y: 202, w: 106, h: 36 },
-  listener:      { x: 472, y: 286, w: 106, h: 36 },
-  mos:           { x: 625, y: 183, w: 122, h: 66 },
+  httpSvc:        { x: 332, y: 202, w: 106, h: 36 },
+  serviceBus:     { x: 484, y: 202, w: 106, h: 36 },
+  listener:       { x: 484, y: 286, w: 106, h: 36 },
+  mos:            { x: 638, y: 183, w: 122, h: 66 },
   // Delivery channels
-  whatsapp:      { x: 800, y: 96,  w: 92,  h: 30 },
-  sms:           { x: 800, y: 142, w: 92,  h: 30 },
-  emailSvc:      { x: 800, y: 190, w: 92,  h: 30 },
-  awsSes:        { x: 926, y: 190, w: 78,  h: 30 },
-  pushPath:      { x: 800, y: 238, w: 92,  h: 30 },
+  whatsapp:       { x: 815, y: 96,  w: 92,  h: 30 },
+  sms:            { x: 815, y: 142, w: 92,  h: 30 },
+  emailSvc:       { x: 815, y: 190, w: 92,  h: 30 },
+  awsSes:         { x: 940, y: 190, w: 78,  h: 30 },
+  pushPath:       { x: 815, y: 238, w: 92,  h: 30 },
   // Push sub-chain
-  mobilePlat:    { x: 625, y: 326, w: 110, h: 30 },
-  pnw:           { x: 800, y: 313, w: 92,  h: 30 },
-  apn:           { x: 926, y: 292, w: 78,  h: 30 },
-  firebase:      { x: 926, y: 340, w: 78,  h: 30 },
+  mobilePlat:     { x: 638, y: 328, w: 110, h: 30 },
+  pnw:            { x: 815, y: 318, w: 92,  h: 30 },
+  apn:            { x: 940, y: 297, w: 78,  h: 30 },
+  firebase:       { x: 940, y: 345, w: 78,  h: 30 },
   // Status store
-  cosmosdb:      { x: 472, y: 410, w: 110, h: 34 },
+  cosmosdb:       { x: 484, y: 415, w: 110, h: 34 },
 };
 
-// Attachment-point helpers
 const rx = (k) => N[k].x + N[k].w;
 const lx = (k) => N[k].x;
 const cx = (k) => N[k].x + N[k].w / 2;
@@ -38,7 +35,6 @@ const ty = (k) => N[k].y;
 const by = (k) => N[k].y + N[k].h;
 const my = (k) => N[k].y + N[k].h / 2;
 
-// Draws a rect + labels
 const Node = ({ id, l1, l2, type }) => {
   const { x, y, w, h } = N[id];
   const midX = x + w / 2;
@@ -52,43 +48,52 @@ const Node = ({ id, l1, l2, type }) => {
   );
 };
 
-// Animated path
-const Flow = ({ d, phase, amber, dashed }) => (
+// Animated forward-flow path
+const Flow = ({ d, phase }) => (
   <path
     d={d}
-    className={`dp${dashed ? ' dp-dash' : ''}${amber ? ' dp-amber' : ''}`}
+    className="dp"
     style={{ animationDelay: `${phase * 0.45}s` }}
-    markerEnd={amber ? 'url(#am)' : 'url(#cm)'}
+    markerEnd="url(#cm)"
   />
 );
 
-// Zone label
+// Static dashed amber path (pingback)
+const Pingback = ({ d, noArrow }) => (
+  <path
+    d={d}
+    className="dp-pingback"
+    markerEnd={noArrow ? undefined : 'url(#am)'}
+  />
+);
+
+// Small arrow label
+const ArrowLabel = ({ x, y, text }) => (
+  <text x={x} y={y} textAnchor="middle" className="al">{text}</text>
+);
+
 const ZL = ({ x, y, text }) => (
   <text x={x} y={y} className="zl">{text}</text>
 );
 
 const DENSArchitecture = () => (
-  <svg viewBox="0 0 1040 470" className="dens-svg" aria-label="DENS system architecture">
+  <svg viewBox="0 0 1080 470" className="dens-svg" aria-label="DENS system architecture">
     <defs>
-      {/* Cyan arrowhead */}
       <marker id="cm" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
         <path d="M0,0 L0,7 L7,3.5 z" fill="var(--accent-cyan)" opacity="0.9" />
       </marker>
-      {/* Amber arrowhead */}
       <marker id="am" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
-        <path d="M0,0 L0,7 L7,3.5 z" fill="var(--accent-amber)" opacity="0.7" />
+        <path d="M0,0 L0,7 L7,3.5 z" fill="var(--accent-amber)" opacity="0.8" />
       </marker>
       <style>{`
         .dens-svg { width: 100%; height: auto; display: block; }
 
-        /* Node base */
         .dn rect { fill: var(--bg-surface); stroke-width: 1.5; }
-        .dn-ext rect  { stroke: var(--accent-amber); }
-        .dn-int rect  { stroke: var(--accent-cyan); stroke-opacity: 0.7; }
-        .dn-hub rect  { fill: rgba(34,211,238,0.07); stroke: var(--accent-cyan); stroke-width: 2; }
+        .dn-ext  rect { stroke: var(--accent-amber); }
+        .dn-int  rect { stroke: var(--accent-cyan); stroke-opacity: 0.7; }
+        .dn-hub  rect { fill: rgba(34,211,238,0.07); stroke: var(--accent-cyan); stroke-width: 2; }
         .dn-data rect { stroke: var(--border); }
 
-        /* Text */
         .dl1 {
           font-family: 'JetBrains Mono', monospace;
           font-size: 7.5px;
@@ -100,11 +105,10 @@ const DENSArchitecture = () => (
           font-size: 6px;
           fill: var(--text-secondary);
         }
-        .dn-ext .dl1  { fill: var(--accent-amber); }
-        .dn-hub .dl1  { fill: var(--accent-cyan); font-size: 8.5px; }
-        .dn-hub .dl2  { fill: var(--accent-cyan); opacity: 0.7; }
+        .dn-ext .dl1 { fill: var(--accent-amber); }
+        .dn-hub .dl1 { fill: var(--accent-cyan); font-size: 8.5px; }
+        .dn-hub .dl2 { fill: var(--accent-cyan); opacity: 0.7; }
 
-        /* Zone labels */
         .zl {
           font-family: 'JetBrains Mono', monospace;
           font-size: 6px;
@@ -114,7 +118,15 @@ const DENSArchitecture = () => (
           text-transform: uppercase;
         }
 
-        /* Flow paths */
+        /* Arrow labels */
+        .al {
+          font-family: 'DM Sans', sans-serif;
+          font-size: 5.5px;
+          fill: var(--accent-amber);
+          opacity: 0.75;
+        }
+
+        /* Forward flow paths */
         .dp {
           fill: none;
           stroke: var(--accent-cyan);
@@ -124,18 +136,26 @@ const DENSArchitecture = () => (
           animation: flow-draw 0.55s cubic-bezier(0.4,0,0.2,1) forwards;
           opacity: 0.8;
         }
-        .dp-amber {
+
+        /* Pingback dashed amber */
+        .dp-pingback {
+          fill: none;
           stroke: var(--accent-amber);
-          stroke-dasharray: 8 5;
+          stroke-width: 1.2;
+          stroke-dasharray: 6 4;
           stroke-dashoffset: 0;
-          animation: dash-flow 2.5s linear infinite;
+          animation: dash-flow 2.2s linear infinite;
           opacity: 0.55;
         }
-        .dp-dash {
-          stroke-dasharray: 8 5;
-          stroke-dashoffset: 0;
-          animation: dash-flow 2s linear infinite;
+        /* Pingback bus - static vertical line */
+        .dp-bus {
+          fill: none;
+          stroke: var(--accent-amber);
+          stroke-width: 1;
+          stroke-dasharray: 4 4;
+          opacity: 0.3;
         }
+
         @keyframes flow-draw {
           to { stroke-dashoffset: 0; }
         }
@@ -146,123 +166,100 @@ const DENSArchitecture = () => (
     </defs>
 
     {/* ── Zone labels ── */}
-    <ZL x="18"  y="76"  text="Data Sources" />
-    <ZL x="320" y="190" text="Message Pipeline" />
-    <ZL x="800" y="84"  text="Delivery Channels" />
-    <ZL x="625" y="315" text="Push Sub-Chain" />
-    <ZL x="472" y="400" text="Status Store" />
+    <ZL x="18"  y="66"  text="Data Sources" />
+    <ZL x="332" y="190" text="Message Pipeline" />
+    <ZL x="815" y="84"  text="Delivery Channels" />
+    <ZL x="638" y="316" text="Push Sub-Chain" />
+    <ZL x="484" y="403" text="Status Store" />
 
-    {/* ── Phase 0 — Flight Events → DENS ── */}
-    <Flow phase={0}
-      d={`M ${rx('flightEvents')} ${my('flightEvents')} L ${lx('dens')} ${my('dens')}`} />
+    {/* ═══════════════════════════════════════════════════════ */}
+    {/* PHASE 0 — External Vendor → DENS (3 connections)       */}
+    {/* ═══════════════════════════════════════════════════════ */}
+    {/* Flight Events (top arrow) */}
+    <Flow phase={0} d={`M ${rx('externalVendor')} ${N.externalVendor.y + 22} L ${lx('dens')} 200`} />
+    {/* Passenger Data (middle arrow) */}
+    <Flow phase={0} d={`M ${rx('externalVendor')} ${my('externalVendor')} L ${lx('dens')} 216`} />
+    {/* Live Updates (bottom arrow) */}
+    <Flow phase={0} d={`M ${rx('externalVendor')} ${N.externalVendor.y + 70} L ${lx('dens')} 232`} />
 
-    {/* ── Phase 1 — Data Sources → DENS ── */}
-    {/* PostgreSQL → DENS top */}
-    <Flow phase={1}
-      d={`M ${rx('postgres')} ${my('postgres')} C 148 ${my('postgres')} ${cx('dens')} 135 ${cx('dens')} ${ty('dens')}`} />
-    {/* Amadeus Passenger → DENS top-right */}
-    <Flow phase={1}
-      d={`M ${rx('amadeusPax')} ${my('amadeusPax')} C 296 ${my('amadeusPax')} ${cx('dens') + 20} 110 ${cx('dens') + 20} ${ty('dens')}`} />
-    {/* Amadeus Live → DENS top-right */}
-    <Flow phase={1}
-      d={`M ${rx('amadeusLive')} ${my('amadeusLive')} C 296 ${my('amadeusLive')} ${cx('dens') + 30} 130 ${cx('dens') + 30} ${ty('dens')}`} />
+    {/* Arrow labels on the 3 connections */}
+    <ArrowLabel x="145" y="188" text="Flight Events" />
+    <ArrowLabel x="145" y="211" text="Passenger Data" />
+    <ArrowLabel x="145" y="234" text="Live Updates" />
 
-    {/* ── Phase 2 — DENS → HTTP Service ── */}
-    <Flow phase={2}
-      d={`M ${rx('dens')} ${my('dens')} L ${lx('httpSvc')} ${my('httpSvc')}`} />
+    {/* ── PostgreSQL → DENS ── */}
+    <Flow phase={0} d={`M ${rx('postgres')} ${my('postgres')} C 165 ${my('postgres')} ${cx('dens')} 130 ${cx('dens')} ${ty('dens')}`} />
 
-    {/* ── Phase 3 — HTTP → Service Bus ── */}
-    <Flow phase={3}
-      d={`M ${rx('httpSvc')} ${my('httpSvc')} L ${lx('serviceBus')} ${my('serviceBus')}`} />
+    {/* ═══════════════════════════════════════════════════════ */}
+    {/* PHASE 1-5 — Message Pipeline                           */}
+    {/* ═══════════════════════════════════════════════════════ */}
+    <Flow phase={1} d={`M ${rx('dens')} ${my('dens')} L ${lx('httpSvc')} ${my('httpSvc')}`} />
+    <Flow phase={2} d={`M ${rx('httpSvc')} ${my('httpSvc')} L ${lx('serviceBus')} ${my('serviceBus')}`} />
+    <Flow phase={3} d={`M ${cx('serviceBus')} ${by('serviceBus')} L ${cx('listener')} ${ty('listener')}`} />
+    <Flow phase={4} d={`M ${rx('listener')} ${my('listener')} C 638 ${my('listener')} 638 240 ${lx('mos')} ${my('mos')}`} />
 
-    {/* ── Phase 4 — Service Bus → Listener ── */}
-    <Flow phase={4}
-      d={`M ${cx('serviceBus')} ${by('serviceBus')} L ${cx('listener')} ${ty('listener')}`} />
+    {/* ═══════════════════════════════════════════════════════ */}
+    {/* PHASE 5 — MOS fanout to delivery channels              */}
+    {/* ═══════════════════════════════════════════════════════ */}
+    <Flow phase={5} d={`M ${rx('mos')} ${my('mos') - 16} C 782 ${my('mos') - 16} 782 ${my('whatsapp')} ${lx('whatsapp')} ${my('whatsapp')}`} />
+    <Flow phase={5} d={`M ${rx('mos')} ${my('mos') - 5}  C 782 ${my('mos') - 5}  782 ${my('sms')}      ${lx('sms')}      ${my('sms')}`} />
+    <Flow phase={5} d={`M ${rx('mos')} ${my('mos') + 5}  C 782 ${my('mos') + 5}  782 ${my('emailSvc')} ${lx('emailSvc')} ${my('emailSvc')}`} />
+    <Flow phase={5} d={`M ${rx('mos')} ${my('mos') + 16} C 782 ${my('mos') + 16} 782 ${my('pushPath')} ${lx('pushPath')} ${my('pushPath')}`} />
 
-    {/* ── Phase 5 — Listener → MOS ── */}
-    <Flow phase={5}
-      d={`M ${rx('listener')} ${my('listener')} C 625 ${my('listener')} 625 240 ${lx('mos')} ${my('mos')}`} />
+    {/* ── Email → AWS SES ── */}
+    <Flow phase={6} d={`M ${rx('emailSvc')} ${my('emailSvc')} L ${lx('awsSes')} ${my('awsSes')}`} />
 
-    {/* ── Phase 6 — MOS fanout → Channels ── */}
-    {/* MOS → WhatsApp */}
-    <Flow phase={6}
-      d={`M ${rx('mos')} ${my('mos') - 16} C 780 ${my('mos') - 16} 780 ${my('whatsapp')} ${lx('whatsapp')} ${my('whatsapp')}`} />
-    {/* MOS → SMS */}
-    <Flow phase={6}
-      d={`M ${rx('mos')} ${my('mos') - 5} C 780 ${my('mos') - 5} 780 ${my('sms')} ${lx('sms')} ${my('sms')}`} />
-    {/* MOS → Email Microservice */}
-    <Flow phase={6}
-      d={`M ${rx('mos')} ${my('mos') + 5} C 780 ${my('mos') + 5} 780 ${my('emailSvc')} ${lx('emailSvc')} ${my('emailSvc')}`} />
-    {/* MOS → Push Path */}
-    <Flow phase={6}
-      d={`M ${rx('mos')} ${my('mos') + 16} C 780 ${my('mos') + 16} 780 ${my('pushPath')} ${lx('pushPath')} ${my('pushPath')}`} />
+    {/* ═══════════════════════════════════════════════════════ */}
+    {/* PHASE 6 — Push sub-chain                               */}
+    {/* ═══════════════════════════════════════════════════════ */}
+    <Flow phase={6} d={`M ${cx('mos')} ${by('mos')} L ${cx('mobilePlat')} ${ty('mobilePlat')}`} />
+    <Flow phase={7} d={`M ${rx('mobilePlat')} ${my('mobilePlat')} L ${lx('pnw')} ${my('pnw')}`} />
+    <Flow phase={8} d={`M ${rx('pnw')} ${my('pnw') - 5} L ${lx('apn')} ${my('apn')}`} />
+    <Flow phase={8} d={`M ${rx('pnw')} ${my('pnw') + 5} L ${lx('firebase')} ${my('firebase')}`} />
 
-    {/* ── Phase 7 — Email → AWS SES ── */}
-    <Flow phase={7}
-      d={`M ${rx('emailSvc')} ${my('emailSvc')} L ${lx('awsSes')} ${my('awsSes')}`} />
+    {/* ═══════════════════════════════════════════════════════ */}
+    {/* PINGBACK — Delivery vendors → MOS → CosmosDB           */}
+    {/* ═══════════════════════════════════════════════════════ */}
+    {/* Pingback bus (vertical amber dashed line on right) */}
+    <line x1="1055" y1="111" x2="1055" y2="333" className="dp-bus" />
 
-    {/* ── Phase 7 — MOS → Mobile Platform (get device token) ── */}
-    <Flow phase={7}
-      d={`M ${cx('mos')} ${by('mos')} L ${cx('mobilePlat')} ${ty('mobilePlat')}`} />
+    {/* Stubs: each channel's right edge → pingback bus */}
+    <Pingback noArrow d={`M ${rx('whatsapp')} ${my('whatsapp')} L 1055 ${my('whatsapp')}`} />
+    <Pingback noArrow d={`M ${rx('sms')}      ${my('sms')}      L 1055 ${my('sms')}`} />
+    <Pingback noArrow d={`M ${rx('emailSvc')} ${my('emailSvc')} L 1055 ${my('emailSvc')}`} />
+    <Pingback noArrow d={`M ${rx('pnw')}      ${my('pnw')}      L 1055 ${my('pnw')}`} />
 
-    {/* ── Phase 8 — Mobile Platform → PNW (with device token attached) ── */}
-    <Flow phase={8}
-      d={`M ${rx('mobilePlat')} ${my('mobilePlat')} L ${lx('pnw')} ${my('pnw')}`} />
+    {/* Pingback bus → MOS right side */}
+    <Pingback d={`M 1055 ${my('mos')} C 1055 ${my('mos')} 820 ${my('mos')} ${rx('mos')} ${my('mos')}`} />
 
-    {/* ── Phase 9 — PNW → APN + Firebase ── */}
-    <Flow phase={9}
-      d={`M ${rx('pnw')} ${my('pnw') - 5} L ${lx('apn')} ${my('apn')}`} />
-    <Flow phase={9}
-      d={`M ${rx('pnw')} ${my('pnw') + 5} L ${lx('firebase')} ${my('firebase')}`} />
-
-    {/* ── Phase 10 — Pingback (all vendors → MOS → CosmosDB, dashed amber) ── */}
-    {/* WhatsApp pingback */}
-    <Flow phase={10} amber
-      d={`M ${cx('whatsapp')} ${by('whatsapp')} C ${cx('whatsapp')} 440 ${cx('cosmosdb')} 440 ${cx('cosmosdb')} ${by('cosmosdb')}`} />
-    {/* SMS pingback */}
-    <Flow phase={10} amber
-      d={`M ${cx('sms')} ${by('sms')} C ${cx('sms')} 450 ${cx('cosmosdb') + 10} 450 ${cx('cosmosdb') + 10} ${by('cosmosdb')}`} />
-    {/* Email pingback */}
-    <Flow phase={10} amber
-      d={`M ${cx('emailSvc')} ${by('emailSvc')} C ${cx('emailSvc')} 460 ${cx('cosmosdb') - 10} 460 ${cx('cosmosdb') - 10} ${by('cosmosdb')}`} />
-    {/* Push pingback */}
-    <Flow phase={10} amber
-      d={`M ${cx('pushPath')} ${by('pushPath')} C ${cx('pushPath')} 455 ${cx('cosmosdb') - 20} 455 ${cx('cosmosdb') - 20} ${by('cosmosdb')}`} />
-    {/* MOS → CosmosDB */}
-    <Flow phase={10} amber
-      d={`M ${cx('mos')} ${by('mos')} C ${cx('mos')} 455 ${cx('cosmosdb')} 455 ${cx('cosmosdb')} ${by('cosmosdb')}`} />
-
-    {/* ── Render Nodes (on top of paths) ── */}
-    {/* Data sources */}
-    <Node id="postgres"    l1="PostgreSQL"    l2="Data Platform"   type="data" />
-    <Node id="amadeusPax"  l1="Amadeus API"   l2="Passenger Data"  type="ext"  />
-    <Node id="amadeusLive" l1="Amadeus API"   l2="Live Updates"    type="ext"  />
-    {/* Entry + core */}
-    <Node id="flightEvents" l1="Flight Events" l2="External System" type="ext" />
-    <Node id="dens"        l1="DENS"          l2="Event Processor" type="hub" />
-    {/* Pipeline */}
-    <Node id="httpSvc"     l1="HTTP Service"  l2="Events Endpoint" type="int"  />
-    <Node id="serviceBus"  l1="Service Bus"   l2="Topic"           type="data" />
-    <Node id="listener"    l1="Listener"      l2="Service"         type="int"  />
-    <Node id="mos"         l1="MOS"           l2="Msg Optimizer"   type="hub" />
-    {/* Delivery */}
-    <Node id="whatsapp"    l1="WhatsApp"      l2="Provider"        type="ext"  />
-    <Node id="sms"         l1="SMS"           l2="Provider"        type="ext"  />
-    <Node id="emailSvc"    l1="Email"         l2="Microservice"    type="int"  />
-    <Node id="awsSes"      l1="AWS SES"       l2=""                type="data" />
-    <Node id="pushPath"    l1="Push Notif"    l2="Path"            type="int"  />
-    {/* Push sub-chain */}
-    <Node id="mobilePlat"  l1="Mobile Platform" l2="Device Token"  type="int"  />
-    <Node id="pnw"         l1="Push Wrapper"  l2="(PNW)"          type="int"  />
-    <Node id="apn"         l1="APN"           l2="(Apple)"         type="ext"  />
-    <Node id="firebase"    l1="Firebase"      l2="(Android)"       type="ext"  />
-    {/* Storage */}
-    <Node id="cosmosdb"    l1="CosmosDB"      l2="Status Store"    type="data" />
+    {/* MOS → CosmosDB (status update) */}
+    <Pingback d={`M ${cx('mos')} ${by('mos')} C ${cx('mos')} 432 ${cx('cosmosdb')} 432 ${cx('cosmosdb')} ${ty('cosmosdb')}`} />
 
     {/* Pingback label */}
-    <text x="260" y="463" className="zl" style={{ fill: 'var(--accent-amber)', opacity: 0.6 }}>
-      ← Delivery Status Pingback (delivered / read / failed)
+    <text x="1058" y="228" className="zl" style={{ fill: 'var(--accent-amber)', opacity: 0.55, writingMode: 'tb' }}>
+      PINGBACK (delivered/read)
     </text>
+
+    {/* ═══════════════════════════════════════════════════════ */}
+    {/* NODES — rendered on top of all paths                   */}
+    {/* ═══════════════════════════════════════════════════════ */}
+    <Node id="postgres"       l1="PostgreSQL"      l2="Data Platform"    type="data" />
+    <Node id="externalVendor" l1="External Vendor" l2="(Amadeus System)"  type="ext"  />
+    <Node id="dens"           l1="DENS"            l2="Event Processor"  type="hub"  />
+    <Node id="httpSvc"        l1="HTTP Service"    l2="Events Endpoint"  type="int"  />
+    <Node id="serviceBus"     l1="Service Bus"     l2="Topic"            type="data" />
+    <Node id="listener"       l1="Listener"        l2="Service"          type="int"  />
+    <Node id="mos"            l1="MOS"             l2="Msg Optimizer"    type="hub"  />
+    <Node id="whatsapp"       l1="WhatsApp"        l2="Provider"         type="ext"  />
+    <Node id="sms"            l1="SMS"             l2="Provider"         type="ext"  />
+    <Node id="emailSvc"       l1="Email"           l2="Microservice"     type="int"  />
+    <Node id="awsSes"         l1="AWS SES"         l2=""                 type="data" />
+    <Node id="pushPath"       l1="Push Notif"      l2="Path"             type="int"  />
+    <Node id="mobilePlat"     l1="Mobile Platform" l2="Device Token"     type="int"  />
+    <Node id="pnw"            l1="Push Wrapper"    l2="(PNW)"            type="int"  />
+    <Node id="apn"            l1="APN"             l2="(Apple)"          type="ext"  />
+    <Node id="firebase"       l1="Firebase"        l2="(Android)"        type="ext"  />
+    <Node id="cosmosdb"       l1="CosmosDB"        l2="Status Store"     type="data" />
   </svg>
 );
 
