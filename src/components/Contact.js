@@ -52,7 +52,8 @@ const Contact = () => {
       );
       setStatus('success');
       setFields({ name: '', email: '', subject: '', message: '' });
-    } catch {
+    } catch (err) {
+      console.warn('EmailJS error:', err);
       setStatus('error');
     }
   };
@@ -125,6 +126,7 @@ const Contact = () => {
                     onChange={handleChange}
                     className="field-input"
                     autoComplete={name === 'email' ? 'email' : 'off'}
+                    disabled={status === 'loading'}
                   />
                 </div>
               ))}
@@ -138,18 +140,21 @@ const Contact = () => {
                   value={fields.message}
                   onChange={handleChange}
                   className="field-input field-textarea"
+                  disabled={status === 'loading'}
                 />
               </div>
 
-              {status === 'success' ? (
-                <div className="form-success status-message">
+              {status === 'success' && (
+                <div className="form-success status-message" role="status" aria-live="polite">
                   Message sent — I'll get back to you soon.
                 </div>
-              ) : status === 'error' ? (
-                <div className="form-error status-message">
+              )}
+              {status === 'error' && (
+                <div className="form-error status-message" role="alert" aria-live="assertive">
                   Something went wrong. Try emailing me directly.
                 </div>
-              ) : (
+              )}
+              {status !== 'success' && (
                 <button type="submit" className="btn-primary submit-btn" disabled={status === 'loading'}>
                   {status === 'loading' ? (
                     <><Loader size={16} className="animate-spin" /> Sending…</>
