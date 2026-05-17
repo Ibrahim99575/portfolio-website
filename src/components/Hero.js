@@ -239,6 +239,12 @@ const Hero = memo(() => {
           .mono-letters { font-size: 4.5rem; }
           .mono-frame-outer { width: 160px; height: 160px; }
           .mono-frame-inner { width: 160px; height: 160px; }
+          .hero-tagline {
+            font-size: 0.6rem;
+            letter-spacing: 0.04em;
+            white-space: normal;
+            overflow-wrap: break-word;
+          }
         }
       `}</style>
     </section>
