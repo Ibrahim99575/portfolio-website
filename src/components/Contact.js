@@ -53,7 +53,7 @@ const Contact = () => {
       setStatus('success');
       setFields({ name: '', email: '', subject: '', message: '' });
     } catch (err) {
-      console.warn('EmailJS error:', err);
+      if (process.env.NODE_ENV === 'development') console.warn('EmailJS error:', err);
       setStatus('error');
     }
   };

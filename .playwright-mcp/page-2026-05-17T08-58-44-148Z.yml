@@ -1,0 +1,361 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]: Portfolio
+      - navigation [ref=e7]:
+        - button "Home" [ref=e8] [cursor=pointer]
+        - button "About" [ref=e9] [cursor=pointer]
+        - button "Experience" [ref=e10] [cursor=pointer]
+        - button "Skills" [ref=e11] [cursor=pointer]
+        - button "Projects" [ref=e12] [cursor=pointer]
+        - button "Contact" [ref=e13] [cursor=pointer]
+  - generic [ref=e14]:
+    - generic [ref=e17]:
+      - generic [ref=e18]:
+        - heading "Hi, I'm Ibrahim" [level=1] [ref=e19]
+        - heading "Software Developer at Air India" [level=2] [ref=e20]
+        - paragraph [ref=e21]: 🚀 Full-stack developer specializing in Java & Spring Boot, with hands-on experience architecting enterprise notification systems that serve millions of users. I transform complex business requirements into scalable cloud solutions using Azure and AWS, building robust systems that power critical communications for Air India's operations.
+        - generic [ref=e22]:
+          - button "Learn More" [ref=e23] [cursor=pointer]:
+            - text: Learn More
+            - img [ref=e24]
+          - button "Download Resume" [ref=e28] [cursor=pointer]:
+            - text: Download Resume
+            - img [ref=e29]
+      - generic [ref=e35]: IBRAHIM ALI
+    - generic [ref=e36] [cursor=pointer]:
+      - img [ref=e38]
+      - generic [ref=e40]: Scroll to explore
+  - generic [ref=e43]:
+    - generic [ref=e44]:
+      - heading "About Me" [level=2] [ref=e45]
+      - paragraph [ref=e46]: I'm a dedicated software developer currently working in the Air India Notification team, where I build and maintain sophisticated notification systems using Azure cloud services and AWS platforms. With 1 year of professional experience, I've developed expertise in Azure Databricks, Event Hub, Service Bus, Azure Functions, and enterprise notification system architecture.
+      - paragraph [ref=e47]: My work involves creating multi-channel notification solutions including email, SMS, and messaging services. I design and implement scalable notification architectures using cloud platforms, with applications deployed on both Azure and AWS environments, utilizing CI/CD pipelines for automated deployments from GitHub repositories to production environments.
+      - paragraph [ref=e48]: I'm passionate about cloud technologies, DevOps practices, and event-driven architectures. My experience spans from data analytics with Azure Databricks to building serverless functions and managing deployment pipelines for scalable notification systems.
+    - generic [ref=e50]:
+      - generic [ref=e51]:
+        - img [ref=e53]
+        - heading "Multi-Cloud Development" [level=3] [ref=e56]
+        - paragraph [ref=e57]: Building solutions across Azure and AWS cloud platforms
+      - generic [ref=e58]:
+        - img [ref=e60]
+        - heading "Notification Architecture" [level=3] [ref=e62]
+        - paragraph [ref=e63]: Designing and managing enterprise notification systems
+      - generic [ref=e64]:
+        - img [ref=e66]
+        - heading "CI/CD Pipelines" [level=3] [ref=e70]
+        - paragraph [ref=e71]: Automated deployments from GitHub to production environments
+      - generic [ref=e72]:
+        - img [ref=e74]
+        - heading "Event-Driven Systems" [level=3] [ref=e76]
+        - paragraph [ref=e77]: Azure Service Bus, Event Hub for real-time messaging
+  - generic [ref=e80]:
+    - heading "Professional Experience" [level=2] [ref=e81]
+    - generic [ref=e83]:
+      - img [ref=e85]
+      - generic [ref=e88]:
+        - generic [ref=e89]:
+          - heading "Software Developer" [level=3] [ref=e90]
+          - heading "Air India - Notification Team" [level=4] [ref=e91]
+          - generic [ref=e92]:
+            - generic [ref=e93]:
+              - img [ref=e94]
+              - text: 2024 - Present
+            - generic [ref=e96]:
+              - img [ref=e97]
+              - text: India
+        - list [ref=e101]:
+          - listitem [ref=e102]: ▸ Developing cloud-based notification systems using Azure Databricks and Event Hub
+          - listitem [ref=e103]: ▸ Working with NetCore platform for WhatsApp template generation and management
+          - listitem [ref=e104]: ▸ Implementing SMS notifications using Vilpower API integration
+          - listitem [ref=e105]: ▸ Managing email notifications through AWS SES on AWS platform
+          - listitem [ref=e106]: ▸ Working with Azure Service Bus for reliable message queuing and processing
+          - listitem [ref=e107]: ▸ Creating and maintaining serverless solutions using Azure Functions
+          - listitem [ref=e108]: ▸ Managing CI/CD pipelines for automated deployment from GitHub to production
+          - listitem [ref=e109]: ▸ Working with applications deployed across both Azure and AWS platforms
+        - generic [ref=e110]:
+          - heading "Technologies Used:" [level=5] [ref=e111]
+          - generic [ref=e112]:
+            - generic [ref=e113]: Azure Databricks
+            - generic [ref=e114]: NetCore Platform
+            - generic [ref=e115]: Azure Event Hub
+            - generic [ref=e116]: Azure Service Bus
+            - generic [ref=e117]: Azure Functions
+            - generic [ref=e118]: AWS SES
+            - generic [ref=e119]: Vilpower
+            - generic [ref=e120]: Azure Pipelines
+            - generic [ref=e121]: AWS
+    - generic [ref=e123]:
+      - heading "Career Highlights" [level=3] [ref=e124]
+      - generic [ref=e125]:
+        - generic [ref=e126]:
+          - generic [ref=e127]: 1+
+          - text: Years Experience
+        - generic [ref=e128]:
+          - generic [ref=e129]: Multi-Cloud
+          - text: Azure & AWS
+        - generic [ref=e130]:
+          - generic [ref=e131]: CI/CD
+          - text: Pipelines
+  - generic [ref=e134]:
+    - heading "Skills & Technologies" [level=2] [ref=e135]
+    - paragraph [ref=e136]: Here are the technologies and skills I've developed during my journey as a software developer
+    - generic [ref=e137]:
+      - generic [ref=e138]:
+        - heading "Programming Languages" [level=3] [ref=e139]
+        - generic [ref=e140]:
+          - generic [ref=e142]:
+            - generic [ref=e143]: Java
+            - generic [ref=e144]: 90%
+          - generic [ref=e147]:
+            - generic [ref=e148]: C++
+            - generic [ref=e149]: 85%
+          - generic [ref=e152]:
+            - generic [ref=e153]: Python
+            - generic [ref=e154]: 75%
+          - generic [ref=e157]:
+            - generic [ref=e158]: JavaScript
+            - generic [ref=e159]: 70%
+          - generic [ref=e162]:
+            - generic [ref=e163]: C
+            - generic [ref=e164]: 65%
+      - generic [ref=e166]:
+        - heading "Java & Frameworks" [level=3] [ref=e167]
+        - generic [ref=e168]:
+          - generic [ref=e170]:
+            - generic [ref=e171]: Spring Boot
+            - generic [ref=e172]: 90%
+          - generic [ref=e175]:
+            - generic [ref=e176]: Maven
+            - generic [ref=e177]: 85%
+          - generic [ref=e180]:
+            - generic [ref=e181]: JPA/Hibernate
+            - generic [ref=e182]: 80%
+          - generic [ref=e185]:
+            - generic [ref=e186]: Java Enterprise
+            - generic [ref=e187]: 80%
+          - generic [ref=e190]:
+            - generic [ref=e191]: Spring Security
+            - generic [ref=e192]: 75%
+      - generic [ref=e194]:
+        - heading "Cloud Platforms" [level=3] [ref=e195]
+        - generic [ref=e196]:
+          - generic [ref=e198]:
+            - generic [ref=e199]: Azure Services
+            - generic [ref=e200]: 85%
+          - generic [ref=e203]:
+            - generic [ref=e204]: AWS Platform
+            - generic [ref=e205]: 75%
+          - generic [ref=e208]:
+            - generic [ref=e209]: Azure Databricks
+            - generic [ref=e210]: 80%
+          - generic [ref=e213]:
+            - generic [ref=e214]: Azure Functions
+            - generic [ref=e215]: 75%
+          - generic [ref=e218]:
+            - generic [ref=e219]: Cloud Architecture
+            - generic [ref=e220]: 80%
+      - generic [ref=e222]:
+        - heading "Development & APIs" [level=3] [ref=e223]
+        - generic [ref=e224]:
+          - generic [ref=e226]:
+            - generic [ref=e227]: Notification System Architecture
+            - generic [ref=e228]: 90%
+          - generic [ref=e231]:
+            - generic [ref=e232]: RESTful APIs
+            - generic [ref=e233]: 90%
+          - generic [ref=e236]:
+            - generic [ref=e237]: Event-Driven Architecture
+            - generic [ref=e238]: 85%
+          - generic [ref=e241]:
+            - generic [ref=e242]: Microservices
+            - generic [ref=e243]: 85%
+          - generic [ref=e246]:
+            - generic [ref=e247]: Message Queuing
+            - generic [ref=e248]: 80%
+      - generic [ref=e250]:
+        - heading "DevOps & Tools" [level=3] [ref=e251]
+        - generic [ref=e252]:
+          - generic [ref=e254]:
+            - generic [ref=e255]: CI/CD Pipelines
+            - generic [ref=e256]: 80%
+          - generic [ref=e259]:
+            - generic [ref=e260]: Git Version Control
+            - generic [ref=e261]: 85%
+          - generic [ref=e264]:
+            - generic [ref=e265]: Azure Pipelines
+            - generic [ref=e266]: 75%
+          - generic [ref=e269]:
+            - generic [ref=e270]: Problem Solving
+            - generic [ref=e271]: 90%
+          - generic [ref=e274]:
+            - generic [ref=e275]: Team Collaboration
+            - generic [ref=e276]: 90%
+    - generic [ref=e279]:
+      - heading "Multi-Cloud & DevOps Expertise" [level=3] [ref=e280]
+      - paragraph [ref=e281]: I specialize in multi-cloud environments working with both Azure and AWS platforms. My experience in the Air India Notification team includes working with NetCore platform for WhatsApp template generation, managing Azure Pipelines for automated deployments, and building scalable notification systems across different cloud environments.
+  - generic [ref=e284]:
+    - heading "Featured Projects" [level=2] [ref=e285]
+    - paragraph [ref=e286]: Here are some of the projects I've worked on that demonstrate my skills and experience
+    - generic [ref=e287]:
+      - generic [ref=e288]:
+        - generic [ref=e289]:
+          - heading "Air India Multi-Cloud Notification System" [level=3] [ref=e290]
+          - generic [ref=e291]:
+            - generic [ref=e292]: In Development
+            - generic [ref=e293]:
+              - img [ref=e294]
+              - text: "2024"
+        - paragraph [ref=e296]: A comprehensive notification platform deployed across Azure and AWS, handling WhatsApp template generation via NetCore platform, SMS through Vilpower, and email via AWS SES with automated Azure Pipelines.
+        - generic [ref=e297]:
+          - heading "Key Features:" [level=4] [ref=e298]
+          - list [ref=e299]:
+            - listitem [ref=e300]: • WhatsApp template generation with NetCore
+            - listitem [ref=e301]: • SMS integration with Vilpower API
+            - listitem [ref=e302]: • Email notifications through AWS SES
+            - listitem [ref=e303]: • Multi-cloud deployment (Azure & AWS)
+            - listitem [ref=e304]: • Automated Azure Pipelines from GitHub
+        - generic [ref=e305]:
+          - heading "Technologies:" [level=4] [ref=e306]
+          - generic [ref=e307]:
+            - generic [ref=e308]: Azure Databricks
+            - generic [ref=e309]: NetCore Platform
+            - generic [ref=e310]: Azure Event Hub
+            - generic [ref=e311]: Azure Service Bus
+            - generic [ref=e312]: AWS SES
+            - generic [ref=e313]: Azure Pipelines
+      - generic [ref=e314]:
+        - generic [ref=e315]:
+          - heading "Automated Deployment Pipeline System" [level=3] [ref=e316]
+          - generic [ref=e317]:
+            - generic [ref=e318]: Completed
+            - generic [ref=e319]:
+              - img [ref=e320]
+              - text: "2024"
+        - paragraph [ref=e322]: Built and maintained Azure Pipelines for automated deployment of notification services from GitHub repositories to production environments across Azure and AWS platforms.
+        - generic [ref=e323]:
+          - heading "Key Features:" [level=4] [ref=e324]
+          - list [ref=e325]:
+            - listitem [ref=e326]: • Automated GitHub to production deployment
+            - listitem [ref=e327]: • Multi-cloud deployment support
+            - listitem [ref=e328]: • Pipeline monitoring and alerting
+            - listitem [ref=e329]: • Rollback capabilities
+            - listitem [ref=e330]: • Environment-specific configurations
+        - generic [ref=e331]:
+          - heading "Technologies:" [level=4] [ref=e332]
+          - generic [ref=e333]:
+            - generic [ref=e334]: Azure Pipelines
+            - generic [ref=e335]: Azure Functions
+            - generic [ref=e336]: AWS Deployment
+            - generic [ref=e337]: CI/CD
+            - generic [ref=e338]: Pipeline Automation
+      - generic [ref=e339]:
+        - generic [ref=e340]:
+          - heading "Personal Portfolio Website" [level=3] [ref=e341]
+          - generic [ref=e342]:
+            - generic [ref=e343]: Completed
+            - generic [ref=e344]:
+              - img [ref=e345]
+              - text: "2024"
+        - paragraph [ref=e347]: A responsive portfolio website showcasing my multi-cloud development skills and notification system experience. Features smooth animations and modern design principles built with React.
+        - generic [ref=e348]:
+          - heading "Key Features:" [level=4] [ref=e349]
+          - list [ref=e350]:
+            - listitem [ref=e351]: • Responsive design
+            - listitem [ref=e352]: • Smooth animations
+            - listitem [ref=e353]: • Interactive components
+            - listitem [ref=e354]: • SEO optimized
+        - generic [ref=e355]:
+          - heading "Technologies:" [level=4] [ref=e356]
+          - generic [ref=e357]:
+            - generic [ref=e358]: React
+            - generic [ref=e359]: Framer Motion
+            - generic [ref=e360]: CSS3
+            - generic [ref=e361]: JavaScript
+        - generic [ref=e362]:
+          - link "View Code" [ref=e363] [cursor=pointer]:
+            - /url: https://github.com/Ibrahim99575/portfolio-website
+            - img [ref=e364]
+            - text: View Code
+          - link "Live Demo" [ref=e367] [cursor=pointer]:
+            - /url: "#"
+            - img [ref=e368]
+            - text: Live Demo
+    - paragraph [ref=e373]:
+      - text: More projects are available on my
+      - button "GitHub profile" [ref=e374] [cursor=pointer]
+      - text: . I'm always working on new ideas and contributing to open-source projects.
+  - generic [ref=e377]:
+    - heading "Get In Touch" [level=2] [ref=e378]
+    - paragraph [ref=e379]: I'm always open to discussing new opportunities, interesting projects, or just having a chat about technology and software development.
+    - generic [ref=e380]:
+      - generic [ref=e381]:
+        - heading "Contact Information" [level=3] [ref=e382]
+        - generic [ref=e383]:
+          - link "Email connect.ibrahim.ali@gmail.com" [ref=e384] [cursor=pointer]:
+            - /url: mailto:connect.ibrahim.ali@gmail.com
+            - img [ref=e386]
+            - generic [ref=e389]:
+              - heading "Email" [level=4] [ref=e390]
+              - paragraph [ref=e391]: connect.ibrahim.ali@gmail.com
+          - link "Phone +91 XXXXX XXXXX" [ref=e392] [cursor=pointer]:
+            - /url: tel:+91XXXXXXXXX
+            - img [ref=e394]
+            - generic [ref=e396]:
+              - heading "Phone" [level=4] [ref=e397]
+              - paragraph [ref=e398]: +91 XXXXX XXXXX
+          - link "Location India" [ref=e399] [cursor=pointer]:
+            - /url: "#"
+            - img [ref=e401]
+            - generic [ref=e404]:
+              - heading "Location" [level=4] [ref=e405]
+              - paragraph [ref=e406]: India
+        - generic [ref=e407]:
+          - heading "Follow Me" [level=4] [ref=e408]
+          - generic [ref=e409]:
+            - link "LinkedIn" [ref=e410] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/ibrahim-9-ali/
+              - img [ref=e411]
+              - generic [ref=e415]: LinkedIn
+            - link "GitHub" [ref=e416] [cursor=pointer]:
+              - /url: https://github.com/Ibrahim99575
+              - img [ref=e417]
+              - generic [ref=e420]: GitHub
+            - link "x.com" [ref=e421] [cursor=pointer]:
+              - /url: https://x.com/ibrahim_9_ali
+              - img [ref=e422]
+              - generic [ref=e424]: x.com
+      - generic [ref=e425]:
+        - heading "Send Me a Message" [level=3] [ref=e426]
+        - generic [ref=e427]:
+          - textbox "Your Name" [ref=e429]
+          - textbox "Your Email" [ref=e431]
+          - textbox "Subject" [ref=e433]
+          - textbox "Your Message" [ref=e435]
+          - button "Send Message" [ref=e436] [cursor=pointer]:
+            - text: Send Message
+            - img [ref=e437]
+  - contentinfo [ref=e440]:
+    - generic [ref=e442]:
+      - generic [ref=e443]:
+        - generic [ref=e444]:
+          - heading "Let's Build Something Amazing Together" [level=3] [ref=e445]
+          - paragraph [ref=e446]: I'm always excited to work on new projects and collaborate with fellow developers, designers, and innovators.
+        - button [ref=e447] [cursor=pointer]:
+          - img [ref=e448]
+      - generic [ref=e450]:
+        - generic [ref=e451]:
+          - paragraph [ref=e452]:
+            - text: © 2026 Made with
+            - img [ref=e453]
+            - text: by Ibrahim
+          - paragraph [ref=e455]: Software Developer - Air India Notification Team
+        - generic [ref=e456]:
+          - link "Home" [ref=e457] [cursor=pointer]:
+            - /url: "#hero"
+          - link "About" [ref=e458] [cursor=pointer]:
+            - /url: "#about"
+          - link "Experience" [ref=e459] [cursor=pointer]:
+            - /url: "#experience"
+          - link "Contact" [ref=e460] [cursor=pointer]:
+            - /url: "#contact"

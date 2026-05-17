@@ -231,3 +231,12 @@
   .section-number { font-size: 5rem; top: 1rem; right: 1rem; }
   .section-title { font-size: 1.875rem; }
 }
+
+/* ─── Reduced motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

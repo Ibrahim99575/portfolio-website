@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__plugin_serena_serena__list_dir",
+      "mcp__plugin_serena_serena__create_text_file",
+      "mcp__plugin_serena_serena__execute_shell_command",
+      "mcp__plugin_serena_serena__read_file",
+      "mcp__plugin_serena_serena__get_diagnostics_for_file",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(npm run *)",
+      "Bash(cat)",
+      "Read(//tmp/**)",
+      "Bash(node -e \"require\\('framer-motion'\\); require\\('lucide-react'\\); console.log\\('deps OK'\\)\")",
+      "Bash(Get-ChildItem -Path \"D:\\\\react\\\\portfolio-website\\\\src\\\\components\" -Name)",
+      "Bash(npm test *)",
+      "Bash(npm list *)",
+      "mcp__plugin_playwright_playwright__browser_click",
+      "mcp__plugin_playwright_playwright__browser_resize"
+    ]
+  }
+}

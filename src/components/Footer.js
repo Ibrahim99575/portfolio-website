@@ -38,7 +38,7 @@ const Footer = () => {
             <a href="https://github.com/Ibrahim99575" target="_blank" rel="noreferrer" className="social-link" aria-label="GitHub">
               <Github size={18} />
             </a>
-            <a href="https://x.com" target="_blank" rel="noreferrer" className="social-link" aria-label="X / Twitter">
+            <a href="https://x.com/ibrahim_9_ali" target="_blank" rel="noreferrer" className="social-link" aria-label="X / Twitter">
               <XIcon />
             </a>
           </div>
