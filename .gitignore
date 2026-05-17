@@ -30,5 +30,8 @@ yarn-error.log*
 *.png
 *.jpeg
 
+# Resume source files (only public/ copy is tracked)
+/docs/resume/
+
 # Serena project files
 /.serena
