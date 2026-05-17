@@ -45,7 +45,7 @@ const Experience = () => (
           <div className="exp-impacts">
             {impacts.map((imp, i) => (
               <motion.div
-                key={i}
+                key={imp.slice(0, 30)}
                 className="impact-item"
                 initial={{ opacity: 0, x: -10 }}
                 whileInView={{ opacity: 1, x: 0 }}
