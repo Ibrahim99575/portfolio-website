@@ -1,76 +1,12 @@
 // src/components/Projects.js
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Github, ExternalLink } from 'lucide-react';
+import { Github } from 'lucide-react';
+import DENSArchitecture from './DENSArchitecture';
 
-/* SVG architecture diagram for the featured card */
-const ArchDiagram = () => (
-  <svg viewBox="0 0 320 200" className="arch-svg" aria-label="System architecture diagram">
-    <defs>
-      <marker id="arrow" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
-        <path d="M0,0 L0,6 L6,3 z" fill="var(--accent-cyan)" opacity="0.7" />
-      </marker>
-      <style>{`
-        @keyframes dash-flow {
-          to { stroke-dashoffset: -24; }
-        }
-        .arch-line {
-          stroke: var(--accent-cyan);
-          stroke-width: 1.5;
-          stroke-dasharray: 6 4;
-          fill: none;
-          animation: dash-flow 1.5s linear infinite;
-          opacity: 0.6;
-          marker-end: url(#arrow);
-        }
-      `}</style>
-    </defs>
-
-    {/* GitHub */}
-    <rect x="10" y="80" width="72" height="36" rx="6"
-      fill="var(--bg-surface-2)" stroke="var(--border)" strokeWidth="1" />
-    <text x="46" y="95" textAnchor="middle" fill="var(--text-secondary)"
-      fontSize="8" fontFamily="JetBrains Mono,monospace">GitHub</text>
-    <text x="46" y="108" textAnchor="middle" fill="var(--text-secondary)"
-      fontSize="7" fontFamily="DM Sans,sans-serif">Repository</text>
-
-    {/* Arrow 1 */}
-    <line x1="82" y1="98" x2="112" y2="98" className="arch-line" />
-
-    {/* Azure Pipelines */}
-    <rect x="112" y="74" width="80" height="48" rx="6"
-      fill="var(--bg-surface-2)" stroke="var(--accent-cyan)" strokeWidth="1" strokeOpacity="0.5" />
-    <text x="152" y="94" textAnchor="middle" fill="var(--accent-cyan)"
-      fontSize="8" fontFamily="JetBrains Mono,monospace">Azure</text>
-    <text x="152" y="107" textAnchor="middle" fill="var(--accent-cyan)"
-      fontSize="8" fontFamily="JetBrains Mono,monospace">Pipelines</text>
-
-    {/* Arrow to Azure */}
-    <line x1="192" y1="88" x2="228" y2="60" className="arch-line" style={{ animationDelay: '0.3s' }} />
-
-    {/* Arrow to AWS */}
-    <line x1="192" y1="108" x2="228" y2="136" className="arch-line" style={{ animationDelay: '0.6s' }} />
-
-    {/* Azure Cloud */}
-    <rect x="228" y="40" width="76" height="36" rx="6"
-      fill="var(--bg-surface-2)" stroke="var(--border)" strokeWidth="1" />
-    <text x="266" y="55" textAnchor="middle" fill="var(--text-primary)"
-      fontSize="8" fontFamily="JetBrains Mono,monospace">Azure</text>
-    <text x="266" y="68" textAnchor="middle" fill="var(--text-secondary)"
-      fontSize="7" fontFamily="DM Sans,sans-serif">Databricks · SB</text>
-
-    {/* AWS Cloud */}
-    <rect x="228" y="116" width="76" height="36" rx="6"
-      fill="var(--bg-surface-2)" stroke="var(--border)" strokeWidth="1" />
-    <text x="266" y="131" textAnchor="middle" fill="var(--text-primary)"
-      fontSize="8" fontFamily="JetBrains Mono,monospace">AWS</text>
-    <text x="266" y="144" textAnchor="middle" fill="var(--text-secondary)"
-      fontSize="7" fontFamily="DM Sans,sans-serif">SES · Lambda</text>
-  </svg>
-);
 
 const featuredProject = {
-  title: 'Air India Event-Driven Notification Platform',
+  title: 'Departure Event Notification System (DENS)',
   status: 'dev',
   year: '2024–Present',
   desc: 'High-throughput distributed delivery platform processing 3,500+ flight events/day and ~500,000 passenger notifications/day. Migrated from a polling-based scheduler generating 30,000 daily API calls to a fully event-driven model — cutting operational costs from Rs.40L/month to under Rs.10L/month.',
@@ -170,8 +106,19 @@ const Projects = () => (
             </a>
           </div>
         </div>
-        <div className="featured-diagram">
-          <ArchDiagram />
+
+        {/* DENS Architecture — full-width below content */}
+        <div className="featured-arch">
+          <div className="arch-header">
+            <span className="arch-header-label">System Architecture · Data Flow</span>
+            <span className="arch-legend">
+              <span className="leg leg-ext">External</span>
+              <span className="leg leg-int">Internal µService</span>
+              <span className="leg leg-hub">Core Hub</span>
+              <span className="leg leg-data">Data Store</span>
+            </span>
+          </div>
+          <DENSArchitecture />
         </div>
       </motion.div>
 
@@ -214,21 +161,50 @@ const Projects = () => (
 
     <style>{`
       .featured-card {
-        display: grid;
-        grid-template-columns: 55fr 45fr;
+        display: flex;
+        flex-direction: column;
         background: var(--bg-surface);
         border: 1px solid var(--border);
         border-radius: 12px;
         overflow: hidden;
         margin-bottom: 1.5rem;
       }
-      .featured-content { padding: 2.5rem; border-right: 1px solid var(--border); }
-      .featured-diagram {
-        padding: 2rem;
-        display: flex; align-items: center; justify-content: center;
+      .featured-content { padding: 2rem 2.5rem 1.75rem; }
+      .featured-arch {
+        border-top: 1px solid var(--border);
         background: var(--bg-surface-2);
+        padding: 1rem 1.5rem 1.25rem;
       }
-      .arch-svg { width: 100%; max-width: 320px; height: auto; }
+      .arch-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 0.75rem;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+      .arch-header-label {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.67rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--text-secondary);
+        opacity: 0.7;
+      }
+      .arch-legend {
+        display: flex; gap: 0.75rem; flex-wrap: wrap;
+      }
+      .leg {
+        font-family: 'DM Sans', sans-serif;
+        font-size: 0.65rem;
+        padding: 0.15rem 0.5rem;
+        border-radius: 3px;
+        border: 1px solid;
+      }
+      .leg-ext  { border-color: var(--accent-amber); color: var(--accent-amber); }
+      .leg-int  { border-color: var(--accent-cyan); color: var(--accent-cyan); opacity: 0.7; }
+      .leg-hub  { border-color: var(--accent-cyan); color: var(--accent-cyan); background: rgba(34,211,238,0.07); }
+      .leg-data { border-color: var(--border); color: var(--text-secondary); }
       .supporting-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
