@@ -70,43 +70,43 @@ const ArchDiagram = () => (
 );
 
 const featuredProject = {
-  title: 'Air India Multi-Cloud Notification System',
+  title: 'Air India Event-Driven Notification Platform',
   status: 'dev',
-  year: '2024',
-  desc: 'Enterprise notification platform delivering 20M+ daily notifications across WhatsApp, SMS, and email channels using Azure and AWS infrastructure.',
+  year: '2024–Present',
+  desc: 'High-throughput distributed delivery platform processing 3,500+ flight events/day and ~500,000 passenger notifications/day. Migrated from a polling-based scheduler generating 30,000 daily API calls to a fully event-driven model — cutting operational costs from Rs.40L/month to under Rs.10L/month.',
   features: [
-    'WhatsApp template generation via NetCore platform',
-    'SMS delivery through Vilpower API integration',
-    'Email notifications via AWS SES',
-    'Automated deployment with Azure Pipelines',
+    '3,500+ flight events/day → ~500K passenger notifications — WhatsApp, SMS, email',
+    'Event-driven microservices at 1M+ notifications/day capacity via Azure Event Hub',
+    'Distributed scheduling engine: 100K+ booking events + 400K+ scheduled notifications',
+    '150,000+ burst records pipeline via Event Hub with Azure Data Factory orchestration',
   ],
-  tags: ['Java', 'Spring Boot', 'Azure Databricks', 'Event Hub', 'AWS SES', 'CI/CD'],
+  tags: ['Java', 'Spring Boot', 'Azure Event Hub', 'Service Bus', 'AWS SES', 'Azure Data Factory', 'Azure Pipelines'],
   github: 'https://github.com/Ibrahim99575',
 };
 
 const supportingProjects = [
   {
-    title: 'Automated Deployment Pipeline',
+    title: 'Flight Disruption Management System',
     status: 'completed',
-    year: '2024',
-    desc: 'CI/CD pipeline system automating GitHub-to-production deployments across Azure and AWS with zero-downtime releases.',
+    year: '2025',
+    desc: 'AI-driven prototype for airline disruption impact analysis and resolution. Designed a 4-agent architecture (analysis, severity scoring, option generation, decisioning) built on Claude Code and LangChain.',
     features: [
-      'Multi-cloud deployment support',
-      'Pipeline monitoring and alerting',
-      'Rollback capabilities',
+      'AI-driven 4-agent architecture for disruption resolution',
+      'Deterministic state transitions across 5 conversation stages',
+      'Production-hardened workflows for outage resolution',
     ],
-    tags: ['GitHub Actions', 'Azure Pipelines', 'Docker', 'YAML'],
+    tags: ['Python', 'React.js', 'Claude Code', 'LangChain', 'PostgreSQL'],
     github: 'https://github.com/Ibrahim99575',
   },
   {
     title: 'Portfolio Website',
     status: 'completed',
     year: '2025',
-    desc: 'This portfolio — built with React, Framer Motion, and a custom design system. Features dark/light theme, EmailJS contact form, and PDF resume generation.',
+    desc: 'This portfolio — built with React 19, Framer Motion, and the Signal design system. Features dark/light theme, animated SVG diagrams, EmailJS contact, and dynamic experience calculation.',
     features: [
-      'Signal dark/light design system',
-      'Framer Motion animations',
-      'EmailJS contact integration',
+      'Signal design system — navy, cyan, amber palette',
+      'Expo-eased scroll animations + count-up stats',
+      'Theme toggle with localStorage persistence',
     ],
     tags: ['React', 'Framer Motion', 'CSS', 'EmailJS'],
     github: 'https://github.com/Ibrahim99575/portfolio-website',
@@ -123,18 +123,28 @@ const StatusBadge = ({ status }) =>
     <span className="badge-completed">Completed</span>
   );
 
+const EXPO = [0.16, 1, 0.3, 1];
+
 const Projects = () => (
   <section id="projects" className="section">
     <span className="section-number">04</span>
     <div className="container" style={{ position: 'relative', zIndex: 1 }}>
-      <h2 className="section-title">Projects</h2>
+      <motion.h2
+        className="section-title"
+        initial={{ opacity: 0, x: -40 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.7, ease: EXPO }}
+        viewport={{ once: true }}
+      >
+        Projects
+      </motion.h2>
 
       {/* Featured card */}
       <motion.div
         className="featured-card"
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
+        initial={{ opacity: 0, y: 60, scale: 0.97 }}
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.7, ease: EXPO }}
         viewport={{ once: true }}
       >
         <div className="featured-content">
@@ -171,9 +181,9 @@ const Projects = () => (
           <motion.div
             key={proj.title}
             className="card"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.1, duration: 0.5 }}
+            initial={{ opacity: 0, y: 50, scale: 0.97 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.65, ease: EXPO, delay: i * 0.1 }}
             viewport={{ once: true }}
           >
             <div className="proj-header-row">

@@ -3,11 +3,23 @@ import React, { memo } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Download } from 'lucide-react';
 
-const fadeUp = (delay = 0) => ({
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.6, ease: 'easeOut', delay },
+// Expo ease-out — snappy, satisfying
+const EXPO = [0.16, 1, 0.3, 1];
+
+const reveal = (delay = 0, axis = 'y', offset = 60) => ({
+  initial: { opacity: 0, [axis]: offset },
+  animate: { opacity: 1, [axis]: 0 },
+  transition: { duration: 0.75, ease: EXPO, delay },
 });
+
+const downloadResume = () => {
+  const a = document.createElement('a');
+  a.href = '/Ibrahim_Ali_Resume.pdf';
+  a.download = 'Ibrahim_Ali_Resume.pdf';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+};
 
 const Hero = memo(() => {
   const scrollTo = (id) =>
@@ -21,30 +33,50 @@ const Hero = memo(() => {
       <div className="container hero-inner">
         {/* Left — text */}
         <div className="hero-text">
-          <motion.p className="hero-role" {...fadeUp(0)}>
-            Full-stack Engineer
+          <motion.p className="hero-role" {...reveal(0, 'y', 30)}>
+            Software Engineer · Air India
           </motion.p>
 
-          <motion.h1 className="hero-name" {...fadeUp(0.15)}>
-            IBRAHIM<br />
-            <span className="hero-name-accent">ALI</span>
-          </motion.h1>
+          <div className="hero-name-block">
+            <motion.div
+              className="hero-name-line"
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, ease: EXPO, delay: 0.1 }}
+            >
+              IBRAHIM
+            </motion.div>
+            <motion.div
+              className="hero-name-line hero-name-accent-line"
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, ease: EXPO, delay: 0.2 }}
+            >
+              <span className="hero-name-accent">ALI</span>
+              <motion.span
+                className="hero-underline"
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                transition={{ duration: 0.6, ease: EXPO, delay: 0.7 }}
+              />
+            </motion.div>
+          </div>
 
-          <motion.p className="hero-tagline" {...fadeUp(0.3)}>
-            Java · Spring Boot · Azure · AWS · CI/CD
+          <motion.p className="hero-tagline" {...reveal(0.35, 'y', 20)}>
+            Java · Spring Boot · Azure · AWS · Kafka · Kubernetes
           </motion.p>
 
-          <motion.p className="hero-bio" {...fadeUp(0.38)}>
-            Full-stack developer specializing in Java &amp; Spring Boot, architecting
-            enterprise notification systems that serve millions of users across
-            multi-cloud infrastructure.
+          <motion.p className="hero-bio" {...reveal(0.45, 'y', 30)}>
+            Backend engineer at Air India building high-throughput event-driven
+            systems that process 3,500+ flight events/day and power 1M+
+            passenger notifications across multi-cloud infrastructure.
           </motion.p>
 
-          <motion.div className="hero-ctas" {...fadeUp(0.45)}>
+          <motion.div className="hero-ctas" {...reveal(0.55, 'y', 20)}>
             <button className="btn-primary hero-cta-primary" onClick={() => scrollTo('projects')}>
               View My Work <ArrowRight size={16} />
             </button>
-            <button className="btn-secondary hero-cta-secondary" onClick={() => scrollTo('contact')}>
+            <button className="btn-secondary hero-cta-secondary" onClick={downloadResume}>
               Download Resume <Download size={15} />
             </button>
           </motion.div>
@@ -111,32 +143,37 @@ const Hero = memo(() => {
         .hero-role {
           font-family: 'DM Sans', sans-serif;
           font-weight: 500;
-          font-size: 0.85rem;
+          font-size: 0.82rem;
           letter-spacing: 0.18em;
           text-transform: uppercase;
           color: var(--text-secondary);
-          margin-bottom: 1.25rem;
+          margin-bottom: 1rem;
         }
-        .hero-name {
+        .hero-name-block {
+          margin-bottom: 1.25rem;
+          line-height: 1;
+        }
+        .hero-name-line {
           font-family: 'Syne', sans-serif;
           font-weight: 800;
-          font-size: clamp(3.5rem, 8vw, 6.5rem);
-          line-height: 0.95;
-          color: var(--text-primary);
+          font-size: clamp(2.4rem, 5.5vw, 4rem);
           letter-spacing: -0.02em;
-          margin-bottom: 1.5rem;
-        }
-        .hero-name-accent {
           color: var(--text-primary);
+          display: block;
+        }
+        .hero-name-accent-line {
           position: relative;
           display: inline-block;
         }
-        .hero-name-accent::after {
-          content: '';
-          position: absolute;
-          bottom: -4px; left: 0; right: 0;
+        .hero-name-accent {
+          color: var(--accent-cyan);
+        }
+        .hero-underline {
+          display: block;
           height: 3px;
           background: var(--accent-cyan);
+          transform-origin: left;
+          margin-top: 2px;
         }
         .hero-tagline {
           font-family: 'JetBrains Mono', monospace;
