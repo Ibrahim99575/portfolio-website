@@ -1,266 +1,267 @@
 import React from 'react';
 
-// ViewBox: 0 0 1080 470
-const N = {
-  // Single external vendor (Amadeus — sends flight events + provides data on request)
-  externalVendor: { x: 8,   y: 148, w: 118, h: 92 },
-  // Data platform (internal PostgreSQL)
-  postgres:       { x: 18,  y: 78,  w: 110, h: 32 },
-  // DENS core processor
-  dens:           { x: 165, y: 183, w: 124, h: 66 },
-  // Message pipeline
-  httpSvc:        { x: 332, y: 202, w: 106, h: 36 },
-  serviceBus:     { x: 484, y: 202, w: 106, h: 36 },
-  listener:       { x: 484, y: 286, w: 106, h: 36 },
-  mos:            { x: 638, y: 183, w: 122, h: 66 },
-  // Delivery channels
-  whatsapp:       { x: 815, y: 96,  w: 92,  h: 30 },
-  sms:            { x: 815, y: 142, w: 92,  h: 30 },
-  emailSvc:       { x: 815, y: 190, w: 92,  h: 30 },
-  awsSes:         { x: 940, y: 190, w: 78,  h: 30 },
-  pushPath:       { x: 815, y: 238, w: 92,  h: 30 },
-  // Push sub-chain
-  mobilePlat:     { x: 638, y: 328, w: 110, h: 30 },
-  pnw:            { x: 815, y: 318, w: 92,  h: 30 },
-  apn:            { x: 940, y: 297, w: 78,  h: 30 },
-  firebase:       { x: 940, y: 345, w: 78,  h: 30 },
-  // Status store
-  cosmosdb:       { x: 484, y: 415, w: 110, h: 34 },
+// ─── Orthogonal (straight-line) pipeline diagram ───────────────────────────
+// ViewBox: 0 0 1080 490
+// All connections use only horizontal & vertical segments — zero curves.
+// Each node aligned so same-level connections are perfectly straight.
+
+const NODES = {
+  postgres:       { x: 55,  y: 60,  w: 108, h: 32 },   // right=(163,76)
+  externalVendor: { x: 8,   y: 145, w: 118, h: 72 },   // right=(126,181)
+  dens:           { x: 178, y: 153, w: 118, h: 60 },   // center=(237,183) right=(296,183)
+  httpSvc:        { x: 345, y: 165, w: 106, h: 36 },   // center y=183
+  serviceBus:     { x: 498, y: 165, w: 106, h: 36 },   // center y=183
+  listener:       { x: 498, y: 265, w: 106, h: 36 },   // center y=283
+  mos:            { x: 658, y: 153, w: 118, h: 60 },   // center=(717,183) right=(776,183)
+  whatsapp:       { x: 830, y: 120, w: 92,  h: 30 },   // center y=135
+  sms:            { x: 830, y: 168, w: 92,  h: 30 },   // center y=183 ← same as MOS!
+  emailSvc:       { x: 830, y: 218, w: 92,  h: 30 },   // center y=233
+  awsSes:         { x: 960, y: 218, w: 78,  h: 30 },   // center y=233
+  pushPath:       { x: 830, y: 268, w: 92,  h: 30 },   // center y=283
+  mobilePlat:     { x: 658, y: 335, w: 118, h: 30 },   // center x=717 ← aligns with MOS!
+  pnw:            { x: 830, y: 335, w: 92,  h: 30 },   // center y=350
+  apn:            { x: 960, y: 314, w: 78,  h: 30 },   // center y=329
+  firebase:       { x: 960, y: 362, w: 78,  h: 30 },   // center y=377
+  cosmosdb:       { x: 498, y: 440, w: 110, h: 34 },   // left=(498,457)
 };
 
-const rx = (k) => N[k].x + N[k].w;
-const lx = (k) => N[k].x;
-const cx = (k) => N[k].x + N[k].w / 2;
-const ty = (k) => N[k].y;
-const by = (k) => N[k].y + N[k].h;
-const my = (k) => N[k].y + N[k].h / 2;
-
+// Simple rect + text node
 const Node = ({ id, l1, l2, type }) => {
-  const { x, y, w, h } = N[id];
-  const midX = x + w / 2;
-  const midY = y + h / 2;
+  const { x, y, w, h } = NODES[id];
+  const mx = x + w / 2, my = y + h / 2;
   return (
     <g className={`dn dn-${type}`}>
-      <rect x={x} y={y} width={w} height={h} rx="5" />
-      <text x={midX} y={l2 ? midY - 4 : midY + 4} textAnchor="middle" className="dl1">{l1}</text>
-      {l2 && <text x={midX} y={midY + 8} textAnchor="middle" className="dl2">{l2}</text>}
+      <rect x={x} y={y} width={w} height={h} rx="4" />
+      <text x={mx} y={l2 ? my - 4 : my + 4} textAnchor="middle" className="dl1">{l1}</text>
+      {l2 && <text x={mx} y={my + 8} textAnchor="middle" className="dl2">{l2}</text>}
     </g>
   );
 };
 
-// Animated forward-flow path
-const Flow = ({ d, phase }) => (
-  <path
-    d={d}
-    className="dp"
-    style={{ animationDelay: `${phase * 0.45}s` }}
-    markerEnd="url(#cm)"
-  />
+// Animated forward-flow path (cyan)
+const F = ({ d, phase }) => (
+  <path d={d} className="fp" style={{ animationDelay: `${phase * 0.4}s` }} markerEnd="url(#cm)" />
 );
 
-// Static dashed amber path (pingback)
-const Pingback = ({ d, noArrow }) => (
-  <path
-    d={d}
-    className="dp-pingback"
-    markerEnd={noArrow ? undefined : 'url(#am)'}
-  />
+// Pingback path (amber dashed, animated)
+const P = ({ d, noArrow }) => (
+  <path d={d} className="pp" markerEnd={noArrow ? undefined : 'url(#am)'} />
 );
 
-// Small arrow label
-const ArrowLabel = ({ x, y, text }) => (
+// Zone / arrow label
+const ZL = ({ x, y, text, amber }) => (
+  <text x={x} y={y} className="zl" style={amber ? { fill: 'var(--accent-amber)', opacity: 0.6 } : {}}>{text}</text>
+);
+const AL = ({ x, y, text }) => (
   <text x={x} y={y} textAnchor="middle" className="al">{text}</text>
 );
 
-const ZL = ({ x, y, text }) => (
-  <text x={x} y={y} className="zl">{text}</text>
-);
+export default function DENSArchitecture() {
+  return (
+    <svg viewBox="0 0 1080 490" className="dens-svg" aria-label="DENS system architecture diagram">
+      <defs>
+        <marker id="cm" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+          <path d="M0,0 L0,7 L7,3.5 z" fill="var(--accent-cyan)" opacity="0.95" />
+        </marker>
+        <marker id="am" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+          <path d="M0,0 L0,7 L7,3.5 z" fill="var(--accent-amber)" opacity="0.85" />
+        </marker>
 
-const DENSArchitecture = () => (
-  <svg viewBox="0 0 1080 470" className="dens-svg" aria-label="DENS system architecture">
-    <defs>
-      <marker id="cm" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
-        <path d="M0,0 L0,7 L7,3.5 z" fill="var(--accent-cyan)" opacity="0.9" />
-      </marker>
-      <marker id="am" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
-        <path d="M0,0 L0,7 L7,3.5 z" fill="var(--accent-amber)" opacity="0.8" />
-      </marker>
-      <style>{`
-        .dens-svg { width: 100%; height: auto; display: block; }
+        <style>{`
+          .dens-svg { width: 100%; height: auto; display: block; }
 
-        .dn rect { fill: var(--bg-surface); stroke-width: 1.5; }
-        .dn-ext  rect { stroke: var(--accent-amber); }
-        .dn-int  rect { stroke: var(--accent-cyan); stroke-opacity: 0.7; }
-        .dn-hub  rect { fill: rgba(34,211,238,0.07); stroke: var(--accent-cyan); stroke-width: 2; }
-        .dn-data rect { stroke: var(--border); }
+          /* Nodes */
+          .dn rect { fill: var(--bg-surface); stroke-width: 1.5; }
+          .dn-ext  rect { stroke: var(--accent-amber); }
+          .dn-int  rect { stroke: var(--accent-cyan); stroke-opacity: 0.65; }
+          .dn-hub  rect { fill: rgba(34,211,238,0.08); stroke: var(--accent-cyan); stroke-width: 2; }
+          .dn-data rect { stroke: var(--border); }
 
-        .dl1 {
-          font-family: 'JetBrains Mono', monospace;
-          font-size: 7.5px;
-          fill: var(--text-primary);
-          font-weight: 600;
-        }
-        .dl2 {
-          font-family: 'DM Sans', sans-serif;
-          font-size: 6px;
-          fill: var(--text-secondary);
-        }
-        .dn-ext .dl1 { fill: var(--accent-amber); }
-        .dn-hub .dl1 { fill: var(--accent-cyan); font-size: 8.5px; }
-        .dn-hub .dl2 { fill: var(--accent-cyan); opacity: 0.7; }
+          .dl1 { font-family:'JetBrains Mono',monospace; font-size:7.5px; fill:var(--text-primary); font-weight:600; }
+          .dl2 { font-family:'DM Sans',sans-serif; font-size:6px; fill:var(--text-secondary); }
+          .dn-ext  .dl1 { fill:var(--accent-amber); }
+          .dn-hub  .dl1 { fill:var(--accent-cyan); font-size:8.5px; }
+          .dn-hub  .dl2 { fill:var(--accent-cyan); opacity:0.75; }
 
-        .zl {
-          font-family: 'JetBrains Mono', monospace;
-          font-size: 6px;
-          fill: var(--text-secondary);
-          letter-spacing: 0.1em;
-          opacity: 0.45;
-          text-transform: uppercase;
-        }
+          /* Zone labels */
+          .zl { font-family:'JetBrains Mono',monospace; font-size:6px; fill:var(--text-secondary); letter-spacing:0.1em; opacity:0.4; text-transform:uppercase; }
 
-        /* Arrow labels */
-        .al {
-          font-family: 'DM Sans', sans-serif;
-          font-size: 5.5px;
-          fill: var(--accent-amber);
-          opacity: 0.75;
-        }
+          /* Arrow labels */
+          .al { font-family:'DM Sans',sans-serif; font-size:5.5px; fill:var(--accent-amber); opacity:0.8; }
 
-        /* Forward flow paths */
-        .dp {
-          fill: none;
-          stroke: var(--accent-cyan);
-          stroke-width: 1.3;
-          stroke-dasharray: 2000;
-          stroke-dashoffset: 2000;
-          animation: flow-draw 0.55s cubic-bezier(0.4,0,0.2,1) forwards;
-          opacity: 0.8;
-        }
+          /* Forward-flow paths */
+          .fp {
+            fill: none;
+            stroke: var(--accent-cyan);
+            stroke-width: 1.4;
+            stroke-dasharray: 2000;
+            stroke-dashoffset: 2000;
+            animation: flow-draw 0.5s ease-out forwards;
+            opacity: 0.85;
+          }
 
-        /* Pingback dashed amber */
-        .dp-pingback {
-          fill: none;
-          stroke: var(--accent-amber);
-          stroke-width: 1.2;
-          stroke-dasharray: 6 4;
-          stroke-dashoffset: 0;
-          animation: dash-flow 2.2s linear infinite;
-          opacity: 0.55;
-        }
-        /* Pingback bus - static vertical line */
-        .dp-bus {
-          fill: none;
-          stroke: var(--accent-amber);
-          stroke-width: 1;
-          stroke-dasharray: 4 4;
-          opacity: 0.3;
-        }
+          /* Pingback paths */
+          .pp {
+            fill: none;
+            stroke: var(--accent-amber);
+            stroke-width: 1.2;
+            stroke-dasharray: 6 4;
+            stroke-dashoffset: 0;
+            animation: dash-flow 2s linear infinite;
+            opacity: 0.55;
+          }
 
-        @keyframes flow-draw {
-          to { stroke-dashoffset: 0; }
-        }
-        @keyframes dash-flow {
-          to { stroke-dashoffset: -26; }
-        }
-      `}</style>
-    </defs>
+          /* Pingback vertical bus */
+          .pb { fill:none; stroke:var(--accent-amber); stroke-width:1; stroke-dasharray:4 4; opacity:0.25; }
 
-    {/* ── Zone labels ── */}
-    <ZL x="18"  y="66"  text="Data Sources" />
-    <ZL x="332" y="190" text="Message Pipeline" />
-    <ZL x="815" y="84"  text="Delivery Channels" />
-    <ZL x="638" y="316" text="Push Sub-Chain" />
-    <ZL x="484" y="403" text="Status Store" />
+          @keyframes flow-draw { to { stroke-dashoffset: 0; } }
+          @keyframes dash-flow { to { stroke-dashoffset: -26; } }
+        `}</style>
+      </defs>
 
-    {/* ═══════════════════════════════════════════════════════ */}
-    {/* PHASE 0 — External Vendor → DENS (3 connections)       */}
-    {/* ═══════════════════════════════════════════════════════ */}
-    {/* Flight Events (top arrow) */}
-    <Flow phase={0} d={`M ${rx('externalVendor')} ${N.externalVendor.y + 22} L ${lx('dens')} 200`} />
-    {/* Passenger Data (middle arrow) */}
-    <Flow phase={0} d={`M ${rx('externalVendor')} ${my('externalVendor')} L ${lx('dens')} 216`} />
-    {/* Live Updates (bottom arrow) */}
-    <Flow phase={0} d={`M ${rx('externalVendor')} ${N.externalVendor.y + 70} L ${lx('dens')} 232`} />
+      {/* ── Zone labels ── */}
+      <ZL x="55"  y="50"  text="Data Sources" />
+      <ZL x="345" y="153" text="Message Pipeline" />
+      <ZL x="830" y="108" text="Delivery Channels" />
+      <ZL x="658" y="323" text="Push Sub-Chain" />
+      <ZL x="498" y="428" text="Status Store" />
 
-    {/* Arrow labels on the 3 connections */}
-    <ArrowLabel x="145" y="188" text="Flight Events" />
-    <ArrowLabel x="145" y="211" text="Passenger Data" />
-    <ArrowLabel x="145" y="234" text="Live Updates" />
+      {/* ══════════════════════════════════════════════════════════
+          PHASE 0 — PostgreSQL → DENS (vertical path)
+          163,76 → 237,76 → 237,153  (right then down)
+      ══════════════════════════════════════════════════════════ */}
+      <F phase={0} d="M 163 76 L 237 76 L 237 153" />
 
-    {/* ── PostgreSQL → DENS ── */}
-    <Flow phase={0} d={`M ${rx('postgres')} ${my('postgres')} C 165 ${my('postgres')} ${cx('dens')} 130 ${cx('dens')} ${ty('dens')}`} />
+      {/* ══════════════════════════════════════════════════════════
+          PHASE 0 — External Vendor → DENS (3 straight horizontal lines)
+          Each exits External Vendor right edge (x=126) at a specific y,
+          enters DENS left edge (x=178) at the same y — perfectly straight.
+      ══════════════════════════════════════════════════════════ */}
+      {/* Flight Events */}
+      <F phase={0} d="M 126 163 L 178 163" />
+      {/* Passenger Data */}
+      <F phase={0} d="M 126 183 L 178 183" />
+      {/* Live Updates */}
+      <F phase={0} d="M 126 203 L 178 203" />
 
-    {/* ═══════════════════════════════════════════════════════ */}
-    {/* PHASE 1-5 — Message Pipeline                           */}
-    {/* ═══════════════════════════════════════════════════════ */}
-    <Flow phase={1} d={`M ${rx('dens')} ${my('dens')} L ${lx('httpSvc')} ${my('httpSvc')}`} />
-    <Flow phase={2} d={`M ${rx('httpSvc')} ${my('httpSvc')} L ${lx('serviceBus')} ${my('serviceBus')}`} />
-    <Flow phase={3} d={`M ${cx('serviceBus')} ${by('serviceBus')} L ${cx('listener')} ${ty('listener')}`} />
-    <Flow phase={4} d={`M ${rx('listener')} ${my('listener')} C 638 ${my('listener')} 638 240 ${lx('mos')} ${my('mos')}`} />
+      {/* Arrow labels between External Vendor and DENS */}
+      <AL x="152" y="159" text="Flight Events" />
+      <AL x="152" y="179" text="Passenger Data" />
+      <AL x="152" y="199" text="Live Updates" />
 
-    {/* ═══════════════════════════════════════════════════════ */}
-    {/* PHASE 5 — MOS fanout to delivery channels              */}
-    {/* ═══════════════════════════════════════════════════════ */}
-    <Flow phase={5} d={`M ${rx('mos')} ${my('mos') - 16} C 782 ${my('mos') - 16} 782 ${my('whatsapp')} ${lx('whatsapp')} ${my('whatsapp')}`} />
-    <Flow phase={5} d={`M ${rx('mos')} ${my('mos') - 5}  C 782 ${my('mos') - 5}  782 ${my('sms')}      ${lx('sms')}      ${my('sms')}`} />
-    <Flow phase={5} d={`M ${rx('mos')} ${my('mos') + 5}  C 782 ${my('mos') + 5}  782 ${my('emailSvc')} ${lx('emailSvc')} ${my('emailSvc')}`} />
-    <Flow phase={5} d={`M ${rx('mos')} ${my('mos') + 16} C 782 ${my('mos') + 16} 782 ${my('pushPath')} ${lx('pushPath')} ${my('pushPath')}`} />
+      {/* ══════════════════════════════════════════════════════════
+          PHASE 1 — DENS → HTTP Service (straight horizontal)
+      ══════════════════════════════════════════════════════════ */}
+      <F phase={1} d="M 296 183 L 345 183" />
 
-    {/* ── Email → AWS SES ── */}
-    <Flow phase={6} d={`M ${rx('emailSvc')} ${my('emailSvc')} L ${lx('awsSes')} ${my('awsSes')}`} />
+      {/* ══════════════════════════════════════════════════════════
+          PHASE 2 — HTTP Service → Service Bus (straight horizontal)
+      ══════════════════════════════════════════════════════════ */}
+      <F phase={2} d="M 451 183 L 498 183" />
 
-    {/* ═══════════════════════════════════════════════════════ */}
-    {/* PHASE 6 — Push sub-chain                               */}
-    {/* ═══════════════════════════════════════════════════════ */}
-    <Flow phase={6} d={`M ${cx('mos')} ${by('mos')} L ${cx('mobilePlat')} ${ty('mobilePlat')}`} />
-    <Flow phase={7} d={`M ${rx('mobilePlat')} ${my('mobilePlat')} L ${lx('pnw')} ${my('pnw')}`} />
-    <Flow phase={8} d={`M ${rx('pnw')} ${my('pnw') - 5} L ${lx('apn')} ${my('apn')}`} />
-    <Flow phase={8} d={`M ${rx('pnw')} ${my('pnw') + 5} L ${lx('firebase')} ${my('firebase')}`} />
+      {/* ══════════════════════════════════════════════════════════
+          PHASE 3 — Service Bus → Listener (straight vertical)
+          Center x=551, from SB bottom (y=201) to Listener top (y=265)
+      ══════════════════════════════════════════════════════════ */}
+      <F phase={3} d="M 551 201 L 551 265" />
 
-    {/* ═══════════════════════════════════════════════════════ */}
-    {/* PINGBACK — Delivery vendors → MOS → CosmosDB           */}
-    {/* ═══════════════════════════════════════════════════════ */}
-    {/* Pingback bus (vertical amber dashed line on right) */}
-    <line x1="1055" y1="111" x2="1055" y2="333" className="dp-bus" />
+      {/* ══════════════════════════════════════════════════════════
+          PHASE 4 — Listener → MOS (L-shaped: right → up → right)
+          From Listener right center (604,283), clearance at x=635,
+          up to y=183, then right to MOS left (658,183)
+      ══════════════════════════════════════════════════════════ */}
+      <F phase={4} d="M 604 283 L 635 283 L 635 183 L 658 183" />
 
-    {/* Stubs: each channel's right edge → pingback bus */}
-    <Pingback noArrow d={`M ${rx('whatsapp')} ${my('whatsapp')} L 1055 ${my('whatsapp')}`} />
-    <Pingback noArrow d={`M ${rx('sms')}      ${my('sms')}      L 1055 ${my('sms')}`} />
-    <Pingback noArrow d={`M ${rx('emailSvc')} ${my('emailSvc')} L 1055 ${my('emailSvc')}`} />
-    <Pingback noArrow d={`M ${rx('pnw')}      ${my('pnw')}      L 1055 ${my('pnw')}`} />
+      {/* ══════════════════════════════════════════════════════════
+          PHASE 5 — MOS fanout to 4 delivery channels
+          SMS is a straight horizontal (same y=183 as MOS center).
+          Others are L-shaped with non-overlapping clearance x values.
+      ══════════════════════════════════════════════════════════ */}
+      {/* WhatsApp — up: MOS exits at y=163, turns at x=803, reaches WA y=135 */}
+      <F phase={5} d="M 776 163 L 803 163 L 803 135 L 830 135" />
+      {/* SMS — straight horizontal (y=183 matches MOS center) */}
+      <F phase={5} d="M 776 183 L 830 183" />
+      {/* Email — down: MOS exits at y=200, turns at x=810, reaches Email y=233 */}
+      <F phase={5} d="M 776 200 L 810 200 L 810 233 L 830 233" />
+      {/* Push — down: MOS exits at y=213, turns at x=817, reaches Push y=283 */}
+      <F phase={5} d="M 776 213 L 817 213 L 817 283 L 830 283" />
 
-    {/* Pingback bus → MOS right side */}
-    <Pingback d={`M 1055 ${my('mos')} C 1055 ${my('mos')} 820 ${my('mos')} ${rx('mos')} ${my('mos')}`} />
+      {/* ══════════════════════════════════════════════════════════
+          PHASE 6 — Email → AWS SES (straight horizontal)
+      ══════════════════════════════════════════════════════════ */}
+      <F phase={6} d="M 922 233 L 960 233" />
 
-    {/* MOS → CosmosDB (status update) */}
-    <Pingback d={`M ${cx('mos')} ${by('mos')} C ${cx('mos')} 432 ${cx('cosmosdb')} 432 ${cx('cosmosdb')} ${ty('cosmosdb')}`} />
+      {/* ══════════════════════════════════════════════════════════
+          PHASE 6 — MOS → Mobile Platform (straight vertical)
+          MOS bottom center (717,213) → Mobile Platform top center (717,335)
+      ══════════════════════════════════════════════════════════ */}
+      <F phase={6} d="M 717 213 L 717 335" />
 
-    {/* Pingback label */}
-    <text x="1058" y="228" className="zl" style={{ fill: 'var(--accent-amber)', opacity: 0.55, writingMode: 'tb' }}>
-      PINGBACK (delivered/read)
-    </text>
+      {/* ══════════════════════════════════════════════════════════
+          PHASE 7 — Mobile Platform → PNW (straight horizontal)
+          Right center (776,350) → PNW left center (830,350)
+      ══════════════════════════════════════════════════════════ */}
+      <F phase={7} d="M 776 350 L 830 350" />
 
-    {/* ═══════════════════════════════════════════════════════ */}
-    {/* NODES — rendered on top of all paths                   */}
-    {/* ═══════════════════════════════════════════════════════ */}
-    <Node id="postgres"       l1="PostgreSQL"      l2="Data Platform"    type="data" />
-    <Node id="externalVendor" l1="External Vendor" l2="(Amadeus System)"  type="ext"  />
-    <Node id="dens"           l1="DENS"            l2="Event Processor"  type="hub"  />
-    <Node id="httpSvc"        l1="HTTP Service"    l2="Events Endpoint"  type="int"  />
-    <Node id="serviceBus"     l1="Service Bus"     l2="Topic"            type="data" />
-    <Node id="listener"       l1="Listener"        l2="Service"          type="int"  />
-    <Node id="mos"            l1="MOS"             l2="Msg Optimizer"    type="hub"  />
-    <Node id="whatsapp"       l1="WhatsApp"        l2="Provider"         type="ext"  />
-    <Node id="sms"            l1="SMS"             l2="Provider"         type="ext"  />
-    <Node id="emailSvc"       l1="Email"           l2="Microservice"     type="int"  />
-    <Node id="awsSes"         l1="AWS SES"         l2=""                 type="data" />
-    <Node id="pushPath"       l1="Push Notif"      l2="Path"             type="int"  />
-    <Node id="mobilePlat"     l1="Mobile Platform" l2="Device Token"     type="int"  />
-    <Node id="pnw"            l1="Push Wrapper"    l2="(PNW)"            type="int"  />
-    <Node id="apn"            l1="APN"             l2="(Apple)"          type="ext"  />
-    <Node id="firebase"       l1="Firebase"        l2="(Android)"        type="ext"  />
-    <Node id="cosmosdb"       l1="CosmosDB"        l2="Status Store"     type="data" />
-  </svg>
-);
+      {/* ══════════════════════════════════════════════════════════
+          PHASE 8 — PNW → APN + Firebase (L-shaped, clearance x=941)
+      ══════════════════════════════════════════════════════════ */}
+      {/* PNW → APN (up) */}
+      <F phase={8} d="M 922 342 L 941 342 L 941 329 L 960 329" />
+      {/* PNW → Firebase (down) */}
+      <F phase={8} d="M 922 358 L 941 358 L 941 377 L 960 377" />
 
-export default DENSArchitecture;
+      {/* ══════════════════════════════════════════════════════════
+          PINGBACK — Delivery channels → pingback bus → MOS → CosmosDB
+          Amber dashed animated lines showing status callback flow.
+      ══════════════════════════════════════════════════════════ */}
+
+      {/* Vertical pingback bus at x=1050 */}
+      <line x1="1050" y1="135" x2="1050" y2="420" className="pb" />
+
+      {/* Stubs: each channel right edge → bus (x=1050) */}
+      <P noArrow d="M 922 135 L 1050 135" />
+      <P noArrow d="M 922 183 L 1050 183" />
+      <P noArrow d="M 922 233 L 1050 233" />
+      <P noArrow d="M 922 350 L 1050 350" />
+
+      {/* Bus return → MOS right (via x=785 clearance):
+          from bus bottom (1050,420) left to x=785,
+          up to MOS center y=183, into MOS right (776,183) */}
+      <P d="M 1050 420 L 785 420 L 785 183 L 776 183" />
+
+      {/* MOS → CosmosDB status update:
+          exit MOS bottom-left corner (658,213),
+          down to y=230, left to x=475,
+          down to y=457, right into CosmosDB left (498,457) */}
+      <P d="M 658 213 L 658 230 L 475 230 L 475 457 L 498 457" />
+
+      {/* Pingback label */}
+      <ZL x="1053" y="280" text="pingback" amber />
+
+      {/* CosmosDB update label */}
+      <AL x="416" y="350" text="status update" />
+
+      {/* ══════════════════════════════════════════════════════════
+          NODES — rendered last (on top of all paths)
+      ══════════════════════════════════════════════════════════ */}
+      <Node id="postgres"       l1="Data Platform"   l2="Internal DB"      type="data" />
+      <Node id="externalVendor" l1="External Vendor" l2="Event Source"      type="ext"  />
+      <Node id="dens"           l1="DENS"            l2="Core Processor"   type="hub"  />
+      <Node id="httpSvc"        l1="Service 1"       l2="Event Endpoint"   type="int"  />
+      <Node id="serviceBus"     l1="Message Queue"   l2="Topic"            type="data" />
+      <Node id="listener"       l1="Service 2"       l2="Queue Consumer"   type="int"  />
+      <Node id="mos"            l1="MOS"             l2="Msg Optimizer"    type="hub"  />
+      <Node id="whatsapp"       l1="Channel 1"       l2="WhatsApp"         type="ext"  />
+      <Node id="sms"            l1="Channel 2"       l2="SMS"              type="ext"  />
+      <Node id="emailSvc"       l1="Service 3"       l2="Email Notif"      type="int"  />
+      <Node id="awsSes"         l1="Ext. Provider"   l2="Email"            type="data" />
+      <Node id="pushPath"       l1="Channel 3"       l2="Push Notif"       type="int"  />
+      <Node id="mobilePlat"     l1="Service 4"       l2="Device Registry"  type="int"  />
+      <Node id="pnw"            l1="Service 5"       l2="Push Dispatcher"  type="int"  />
+      <Node id="apn"            l1="Provider 1"      l2="iOS Push"         type="ext"  />
+      <Node id="firebase"       l1="Provider 2"      l2="Android Push"     type="ext"  />
+      <Node id="cosmosdb"       l1="Status DB"       l2="Status Store"     type="data" />
+    </svg>
+  );
+}
