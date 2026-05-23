@@ -16,7 +16,10 @@ const roles = [
       'Built an MCP-based client-server platform integrated with Spring Boot services, cutting production issue identification time from 30 minutes to under 5 minutes through real-time system diagnostics.',
     ],
     tags: ['Java', 'Spring Boot', 'Azure Service Bus', 'AWS SES', 'Azure Functions', 'AKS', 'Redis', 'Docker', 'Kubernetes'],
-    awards: null,
+    awards: [
+      'High Flyer Award ×1',
+      'AI IMPACCT Champion Award ×1',
+    ],
   },
   {
     title: 'Software Development Engineer Trainee',
@@ -31,9 +34,9 @@ const roles = [
     ],
     tags: ['Java', 'Spring Boot', 'Azure Event Hub', 'Azure Data Factory', 'Service Bus', 'Azure Functions', 'AWS SES', 'Azure Pipelines', 'MySQL'],
     awards: [
-      'Dream Team Award (2024–2026)',
-      'High Flyer Award ×2',
-      'AI IMPACCT Champion Award ×2',
+      'Dream Team Award',
+      'High Flyer Award ×1',
+      'AI IMPACCT Champion Award ×1',
     ],
   },
 ];

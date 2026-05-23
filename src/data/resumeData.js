@@ -1,7 +1,7 @@
 export const resumeData = {
   personalInfo: {
     name: "Ibrahim Ali",
-    title: "Software Developer",
+    title: "Software Engineer",
     email: "connect.ibrahim.ali@gmail.com",
     phone: "+91 XXXXX XXXXX",
     location: "India",
@@ -10,12 +10,12 @@ export const resumeData = {
     portfolio: "https://ibrahim99575.github.io/portfolio-website"
   },
   
-  summary: "Full-stack Software Developer with 1+ years specializing in Java & Spring Boot. Expert in architecting enterprise notification systems processing 2 crore+ daily notifications across multiple channels. Proven track record transforming complex business requirements into scalable cloud solutions using Azure and AWS.",
+  summary: "Full-stack Software Engineer with 1+ years specializing in Java & Spring Boot. Expert in architecting enterprise notification systems processing 2 crore+ daily notifications across multiple channels. Proven track record transforming complex business requirements into scalable cloud solutions using Azure and AWS.",
   
   experience: [
     {
       company: "Air India",
-      position: "Software Developer",
+      position: "Software Engineer",
       duration: "2024 - Present",
       location: "India",
       achievements: [

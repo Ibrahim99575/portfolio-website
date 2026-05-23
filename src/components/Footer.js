@@ -29,7 +29,7 @@ const Footer = () => {
 
         <div className="footer-row-2">
           <p className="footer-copy">
-            © {new Date().getFullYear()} Ibrahim Ali · Software Developer
+            © {new Date().getFullYear()} Ibrahim Ali · Software Engineer
           </p>
           <div className="footer-socials">
             <a href="https://www.linkedin.com/in/ibrahim-9-ali/" target="_blank" rel="noreferrer" className="social-link" aria-label="LinkedIn">

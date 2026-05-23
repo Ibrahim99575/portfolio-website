@@ -124,7 +124,7 @@ export class ATSResumeGenerator {
   generateSummary() {
     this.addSection('Professional Summary', () => {
       // Condensed summary for single page
-      const condensedSummary = "Full-stack Software Developer with 1+ year experience specializing in Java & Spring Boot. Expert in architecting enterprise notification systems serving millions of users. Proven track record transforming complex business requirements into scalable cloud solutions using Azure and AWS.";
+      const condensedSummary = "Full-stack Software Engineer with 1+ year experience specializing in Java & Spring Boot. Expert in architecting enterprise notification systems serving millions of users. Proven track record transforming complex business requirements into scalable cloud solutions using Azure and AWS.";
       this.addText(condensedSummary, this.margin, { compact: true });
     }, 2);
   }

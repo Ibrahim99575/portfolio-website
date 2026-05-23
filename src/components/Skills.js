@@ -62,11 +62,8 @@ const Skills = () => (
           >
             <span className="cat-label">{cat.label}</span>
             <div className="cat-tags">
-              {cat.core.map(t => (
+              {[...cat.core, ...cat.rest].map(t => (
                 <span key={t} className="tag tag-core">{t}</span>
-              ))}
-              {cat.rest.map(t => (
-                <span key={t} className="tag">{t}</span>
               ))}
             </div>
           </motion.div>

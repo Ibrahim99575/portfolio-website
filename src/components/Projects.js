@@ -3,37 +3,43 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Github } from 'lucide-react';
 import DENSArchitecture from './DENSArchitecture';
+import FDMSArchitecture from './FDMSArchitecture';
 
 
-const featuredProject = {
-  title: 'Departure Event Notification System (DENS)',
-  status: 'dev',
-  year: '2024–Present',
-  desc: 'High-throughput distributed delivery platform processing 3,500+ flight events/day and ~500,000 passenger notifications/day. Migrated from a polling-based scheduler generating 30,000 daily API calls to a fully event-driven model — cutting operational costs from Rs.40L/month to under Rs.10L/month.',
-  features: [
-    '3,500+ flight events/day → ~500K passenger notifications — WhatsApp, SMS, email',
-    'Event-driven microservices at 1M+ notifications/day capacity via Azure Event Hub',
-    'Distributed scheduling engine: 100K+ booking events + 400K+ scheduled notifications',
-    '150,000+ burst records pipeline via Event Hub with Azure Data Factory orchestration',
-  ],
-  tags: ['Java', 'Spring Boot', 'Azure Event Hub', 'Service Bus', 'AWS SES', 'Azure Data Factory', 'Azure Pipelines'],
-  github: 'https://github.com/Ibrahim99575',
-};
-
-const supportingProjects = [
+const featuredProjects = [
   {
-    title: 'Flight Disruption Management System',
+    title: 'Departure Event Notification System (DENS)',
+    status: 'dev',
+    year: '2024–Present',
+    desc: 'High-throughput distributed delivery platform processing 3,500+ flight events/day and ~500,000 passenger notifications/day. Migrated from a polling-based scheduler generating 30,000 daily API calls to a fully event-driven model — cutting operational costs from Rs.40L/month to under Rs.10L/month.',
+    features: [
+      '3,500+ flight events/day → ~500K passenger notifications — WhatsApp, SMS, email',
+      'Event-driven microservices at 1M+ notifications/day capacity via Azure Event Hub',
+      'Distributed scheduling engine: 100K+ booking events + 400K+ scheduled notifications',
+      '150,000+ burst records pipeline via Event Hub with Azure Data Factory orchestration',
+    ],
+    tags: ['Java', 'Spring Boot', 'Azure Event Hub', 'Service Bus', 'AWS SES', 'Azure Data Factory', 'Azure Pipelines'],
+    github: 'https://github.com/Ibrahim99575',
+    Architecture: DENSArchitecture,
+  },
+  {
+    title: 'Flight Disruption Management System (FDMS)',
     status: 'completed',
     year: '2025',
-    desc: 'AI-driven prototype for airline disruption impact analysis and resolution. Designed a 4-agent architecture (analysis, severity scoring, option generation, decisioning) built on Claude Code and LangChain.',
+    desc: 'AI-driven prototype for airline disruption impact analysis and resolution. Designed a 4-agent architecture (Impact, Severity, Options, Decisioning) coordinated by a LangChain runtime and a 5-stage state machine — all backed by Claude Sonnet as the LLM tier.',
     features: [
-      'AI-driven 4-agent architecture for disruption resolution',
-      'Deterministic state transitions across 5 conversation stages',
-      'Production-hardened workflows for outage resolution',
+      '4 specialised agents: impact analysis, severity scoring, option generation, decisioning',
+      'Deterministic 5-stage state machine for auditable conversation flow',
+      'Multi-source ingestion: Amadeus PSS, weather APIs, manual ops triggers',
+      'Full decision audit trail in PostgreSQL — every agent step persisted for compliance',
     ],
-    tags: ['Python', 'React.js', 'Claude Code', 'LangChain', 'PostgreSQL'],
+    tags: ['Python', 'React.js', 'Claude Sonnet', 'LangChain', 'PostgreSQL'],
     github: 'https://github.com/Ibrahim99575',
+    Architecture: FDMSArchitecture,
   },
+];
+
+const supportingProjects = [
   {
     title: 'Portfolio Website',
     status: 'completed',
@@ -75,52 +81,58 @@ const Projects = () => (
         Projects
       </motion.h2>
 
-      {/* Featured card */}
-      <motion.div
-        className="featured-card"
-        initial={{ opacity: 0, y: 60, scale: 0.97 }}
-        whileInView={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 0.7, ease: EXPO }}
-        viewport={{ once: true }}
-      >
-        <div className="featured-content">
-          <div className="proj-header-row">
-            <StatusBadge status={featuredProject.status} />
-            <span className="proj-year">{featuredProject.year}</span>
-          </div>
-          <h3 className="proj-title">{featuredProject.title}</h3>
-          <p className="proj-desc">{featuredProject.desc}</p>
-          <ul className="proj-features">
-            {featuredProject.features.map(f => (
-              <li key={f}><span className="feat-arrow">→</span>{f}</li>
-            ))}
-          </ul>
-          <div className="proj-footer">
-            <div className="proj-tags">
-              {featuredProject.tags.map(t => (
-                <span key={t} className="tag tag-amber">{t}</span>
-              ))}
+      {/* Featured cards (each with its own architecture diagram) */}
+      {featuredProjects.map((proj, idx) => {
+        const Architecture = proj.Architecture;
+        return (
+          <motion.div
+            key={proj.title}
+            className="featured-card"
+            initial={{ opacity: 0, y: 60, scale: 0.97 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.7, ease: EXPO, delay: idx * 0.1 }}
+            viewport={{ once: true }}
+          >
+            <div className="featured-content">
+              <div className="proj-header-row">
+                <StatusBadge status={proj.status} />
+                <span className="proj-year">{proj.year}</span>
+              </div>
+              <h3 className="proj-title">{proj.title}</h3>
+              <p className="proj-desc">{proj.desc}</p>
+              <ul className="proj-features">
+                {proj.features.map(f => (
+                  <li key={f}><span className="feat-arrow">→</span>{f}</li>
+                ))}
+              </ul>
+              <div className="proj-footer">
+                <div className="proj-tags">
+                  {proj.tags.map(t => (
+                    <span key={t} className="tag tag-amber">{t}</span>
+                  ))}
+                </div>
+                <a href={proj.github} target="_blank" rel="noreferrer" className="icon-btn">
+                  <Github size={18} />
+                </a>
+              </div>
             </div>
-            <a href={featuredProject.github} target="_blank" rel="noreferrer" className="icon-btn">
-              <Github size={18} />
-            </a>
-          </div>
-        </div>
 
-        {/* DENS Architecture — full-width below content */}
-        <div className="featured-arch">
-          <div className="arch-header">
-            <span className="arch-header-label">System Architecture · Data Flow</span>
-            <span className="arch-legend">
-              <span className="leg leg-ext">External</span>
-              <span className="leg leg-int">Internal µService</span>
-              <span className="leg leg-hub">Core Hub</span>
-              <span className="leg leg-data">Data Store</span>
-            </span>
-          </div>
-          <DENSArchitecture />
-        </div>
-      </motion.div>
+            {/* Architecture — full-width below content */}
+            <div className="featured-arch">
+              <div className="arch-header">
+                <span className="arch-header-label">System Architecture · Data Flow</span>
+                <span className="arch-legend">
+                  <span className="leg leg-ext">External</span>
+                  <span className="leg leg-int">Internal µService</span>
+                  <span className="leg leg-hub">Core Hub</span>
+                  <span className="leg leg-data">Data Store</span>
+                </span>
+              </div>
+              <Architecture />
+            </div>
+          </motion.div>
+        );
+      })}
 
       {/* Supporting cards */}
       <div className="supporting-grid">
