@@ -19,13 +19,11 @@ The contact form has been updated with robust error handling and fallback mechan
 - Always available as a backup option
 - Opens email client directly
 
-## Current Configuration
+## Configuration
 
-### Email Settings
-- **Recipient**: connect.ibrahim.ali@gmail.com
-- **EmailJS Service ID**: REDACTED_SERVICE_ID
-- **EmailJS Template ID**: REDACTED_TEMPLATE_ID
-- **EmailJS Public Key**: REDACTED_PUBLIC_KEY
+EmailJS service ID, template ID, public key, and recipient address are loaded
+from environment variables at build time (see `.env.example`). Do **not** add
+real credentials to this file — they will be inlined into the public JS bundle.
 
 ## To Enable Full EmailJS Functionality
 
